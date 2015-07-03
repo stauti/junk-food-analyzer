@@ -3,7 +3,7 @@ namespace Jfa\Model;
 
 use Zend\Db\TableGateway\TableGateway;
 
-class JunkFoodTable
+class IngredientTable
 {
     protected $tableGateway;
 
@@ -54,17 +54,5 @@ class JunkFoodTable
     public function deleteJunkFood($id)
     {
         $this->tableGateway->delete(array('id' => (int) $id));
-    }
-
-    public function getDrogoSugestion()
-    {
-        $rowset = $this->fetchAll();
-        $data = array();
-
-        foreach ($rowset as $row) {
-            $data[] = $row;
-        }
-
-        return $data[array_rand($data)];
     }
 }

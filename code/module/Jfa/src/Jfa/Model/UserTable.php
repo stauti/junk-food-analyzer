@@ -3,7 +3,7 @@ namespace Jfa\Model;
 
 use Zend\Db\TableGateway\TableGateway;
 
-class JunkFoodTable
+class UserTable
 {
     protected $tableGateway;
 
@@ -18,7 +18,7 @@ class JunkFoodTable
         return $resultSet;
     }
 
-    public function getJunkFood($id)
+    public function getUser($id)
     {
         $id  = (int) $id;
         $rowset = $this->tableGateway->select(array('id' => $id));
@@ -29,14 +29,14 @@ class JunkFoodTable
         return $row;
     }
 
-    public function saveJunkFood(JunkFood $junk)
+    public function saveUser(User $user)
     {
         $data = array(
-            'name' => $junk->name,
-            'type'  => $junk->type,
+            'name' => $user->name,
+            'type'  => $user->type,
         );
 
-        $id = (int)$junk->id;
+        $id = (int)$user->id;
         if ($id == 0) {
             $this->tableGateway->insert($data);
             $id = $this->tableGateway->getLastInsertValue();
@@ -51,20 +51,8 @@ class JunkFoodTable
         return $id;
     }
 
-    public function deleteJunkFood($id)
+    public function deleteUser($id)
     {
         $this->tableGateway->delete(array('id' => (int) $id));
-    }
-
-    public function getDrogoSugestion()
-    {
-        $rowset = $this->fetchAll();
-        $data = array();
-
-        foreach ($rowset as $row) {
-            $data[] = $row;
-        }
-
-        return $data[array_rand($data)];
     }
 }

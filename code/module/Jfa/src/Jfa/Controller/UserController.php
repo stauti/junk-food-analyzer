@@ -3,40 +3,39 @@ namespace Jfa\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Jfa\Model\JunkFood;
-use Jfa\Form\JunkFoodForm;
+use Jfa\Model\User;
+use Jfa\Form\UserForm;
 
-class JunkFoodController extends AbstractActionController
+class UserController extends AbstractActionController
 {
-    protected $junkFoodTable;
+    protected $userFoodTable;
 
     public function indexAction()
     {
         return new ViewModel(array(
-            'junkfoods' => $this->getJunkFoodTable()->fetchAll(),
+            'users' => $this->getUserTable()->fetchAll(),
         ));
     }
 
     public function addAction()
     {
-        $form = new JunkFoodForm();
+        $form = new UserForm();
         $form->get('submit')->setValue('Add');
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $junk = new JunkFood();
-            $form->setInputFilter($junk->getInputFilter());
+            $user = new User();
+            $form->setInputFilter($user->getInputFilter());
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-                $junk->exchangeArray($form->getData());
-                $this->getJunkFoodTable()->saveJunkFood($junk);
+                $user->exchangeArray($form->getData());
+                $this->getUserTable()->saveUser($user);
 
                 // Redirect to list of albums
-                return $this->redirect()->toRoute('junkfood');
+                return $this->redirect()->toRoute('user');
             }
         }
-
         return array('form' => $form);
     }
 
@@ -44,36 +43,36 @@ class JunkFoodController extends AbstractActionController
     {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('junkfood', array(
+            return $this->redirect()->toRoute('user', array(
                 'action' => 'add'
             ));
         }
 
-        // Get the JunkFood with the specified id.  An exception is thrown
+        // Get the User with the specified id.  An exception is thrown
         // if it cannot be found, in which case go to the index page.
         try {
-            $junk = $this->getJunkFoodTable()->getJunkFood($id);
+            $user = $this->getUserTable()->getUser($id);
         }
         catch (\Exception $ex) {
-            return $this->redirect()->toRoute('junkfood', array(
+            return $this->redirect()->toRoute('user', array(
                 'action' => 'index'
             ));
         }
 
-        $form  = new JunkFoodForm();
-        $form->bind($junk);
+        $form  = new UserForm();
+        $form->bind($user);
         $form->get('submit')->setAttribute('value', 'Edit');
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $form->setInputFilter($junk->getInputFilter());
+            $form->setInputFilter($user->getInputFilter());
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-                $this->getJunkFoodTable()->saveJunkFood($junk);
+                $this->getUserTable()->saveUser($user);
 
                 // Redirect to list of albums
-                return $this->redirect()->toRoute('junkfood');
+                return $this->redirect()->toRoute('user');
             }
         }
 
@@ -87,7 +86,7 @@ class JunkFoodController extends AbstractActionController
     {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('junkfood');
+            return $this->redirect()->toRoute('user');
         }
 
         $request = $this->getRequest();
@@ -96,35 +95,24 @@ class JunkFoodController extends AbstractActionController
 
             if ($del == 'Yes') {
                 $id = (int) $request->getPost('id');
-                $this->getJunkFoodTable()->deleteJunkFood($id);
+                $this->getUserTable()->deleteUser($id);
             }
 
-            // Redirect to list of junkfoods
-            return $this->redirect()->toRoute('junkfood');
+            // Redirect to list of users
+            return $this->redirect()->toRoute('user');
         }
 
         return array(
             'id'    => $id,
-            'junkfood' => $this->getJunkFoodTable()->getJunkFood($id)
+            'user' => $this->getUserTable()->getUser($id)
         );
     }
 
-    public function drogoAction()
-    {
-        $table = $this->getJunkFoodTable();
-
-        $drogo = $table->getDrogoSugestion();
-
-        return new ViewModel(array(
-            'food' => $drogo
-        ));
-    }
-
-    public function getJunkFoodTable()
+    public function getUserTable()
     {
         if (!$this->junkFoodTable) {
             $sm = $this->getServiceLocator();
-            $this->junkFoodTable = $sm->get('Jfa\Model\JunkFoodTable');
+            $this->junkFoodTable = $sm->get('Jfa\Model\UserTable');
         }
         return $this->junkFoodTable;
     }

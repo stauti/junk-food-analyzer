@@ -1,0 +1,28 @@
+<?php
+$title = 'My Ingredient';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<p>
+    <a href="<?php echo $this->url('ingredient', array('action'=>'add'));?>">Add new ingredient</a>
+</p>
+
+<table class="table">
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>&nbsp;</th>
+    </tr>
+    <?php foreach ($ingredients as $ingredient) : ?>
+        <tr>
+            <td><?php echo $this->escapeHtml($ingredient->name);?></td>
+            <td><?php echo $this->escapeHtml($ingredient->type);?></td>
+            <td>
+                <a href="<?php echo $this->url('ingredient',
+                    array('action'=>'edit', 'id' => $ingredient->id));?>">Edit</a>
+                <a href="<?php echo $this->url('ingredient',
+                    array('action'=>'delete', 'id' => $ingredient->id));?>">Delete</a>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+</table>

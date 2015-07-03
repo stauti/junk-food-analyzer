@@ -10,7 +10,7 @@ return array(
             'junkfood' => array(
                 'type'    => 'segment',
                 'options' => array(
-                    'route'    => '/junkfood[/:action][/:id]',
+                    'route'    => '/backend[/:action][/:id]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'     => '[0-9]+',
