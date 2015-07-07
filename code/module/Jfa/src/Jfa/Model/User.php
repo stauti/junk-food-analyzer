@@ -7,17 +7,19 @@ use Zend\InputFilter\InputFilterInterface;
 
 class User
 {
-    public $id;
+    public $userID;
     public $name;
-    public $type;
+    public $password;
+    public $isAdmin;
 
     protected $inputFilter;
 
     public function exchangeArray($data)
     {
-        $this->id    = (!empty($data['id'])) ? $data['id'] : null;
+        $this->userID    = (!empty($data['userID'])) ? $data['userID'] : null;
         $this->name  = (!empty($data['name'])) ? $data['name'] : null;
-        $this->type  = (!empty($data['type'])) ? $data['type'] : null;
+        $this->password  = (!empty($data['password'])) ? $data['password'] : null;
+        $this->isAdmin = (!empty($data['isAdmin'])) ? $data['isAdmin'] : false;
     }
 
     public function getArrayCopy()
@@ -36,29 +38,10 @@ class User
             $inputFilter = new InputFilter();
 
             $inputFilter->add(array(
-                'name'     => 'id',
+                'name'     => 'userID',
                 'required' => true,
                 'filters'  => array(
                     array('name' => 'Int'),
-                ),
-            ));
-
-            $inputFilter->add(array(
-                'name'     => 'type',
-                'required' => true,
-                'filters'  => array(
-                    array('name' => 'StripTags'),
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array(
-                        'name'    => 'StringLength',
-                        'options' => array(
-                            'encoding' => 'UTF-8',
-                            'min'      => 1,
-                            'max'      => 100,
-                        ),
-                    ),
                 ),
             ));
 
@@ -75,7 +58,26 @@ class User
                         'options' => array(
                             'encoding' => 'UTF-8',
                             'min'      => 1,
-                            'max'      => 100,
+                            'max'      => 25,
+                        ),
+                    ),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name'     => 'password',
+                'required' => true,
+                'filters'  => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name'    => 'StringLength',
+                        'options' => array(
+                            'encoding' => 'UTF-8',
+                            'min'      => 8,
+                            'max'      => 30,
                         ),
                     ),
                 ),

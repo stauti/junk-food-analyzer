@@ -7,17 +7,19 @@ use Zend\InputFilter\InputFilterInterface;
 
 class Ingredient
 {
-    public $id;
-    public $name;
-    public $type;
+    public $ingrID;
+    public $ingrName;
+    public $kcalPer100g;
+    public $isVeggie;
 
     protected $inputFilter;
 
     public function exchangeArray($data)
     {
-        $this->id    = (!empty($data['id'])) ? $data['id'] : null;
-        $this->name  = (!empty($data['name'])) ? $data['name'] : null;
-        $this->type  = (!empty($data['type'])) ? $data['type'] : null;
+        $this->ingrID   = (!empty($data['ingrID'])) ? $data['ingrID'] : null;
+        $this->ingrName  = (!empty($data['ingrName'])) ? $data['ingrName'] : null;
+        $this->kcalPer100g  = (!empty($data['kcalPer100g'])) ? $data['kcalPer100g'] : null;
+        $this->isVeggie = (!empty($data['isVeggie'])) ? $data['isVeggie'] : null;
     }
 
     public function getArrayCopy()
@@ -36,7 +38,7 @@ class Ingredient
             $inputFilter = new InputFilter();
 
             $inputFilter->add(array(
-                'name'     => 'id',
+                'name'     => 'ingrID',
                 'required' => true,
                 'filters'  => array(
                     array('name' => 'Int'),
@@ -44,7 +46,7 @@ class Ingredient
             ));
 
             $inputFilter->add(array(
-                'name'     => 'type',
+                'name'     => 'ingrName',
                 'required' => true,
                 'filters'  => array(
                     array('name' => 'StripTags'),
@@ -56,28 +58,17 @@ class Ingredient
                         'options' => array(
                             'encoding' => 'UTF-8',
                             'min'      => 1,
-                            'max'      => 100,
+                            'max'      => 50,
                         ),
                     ),
                 ),
             ));
 
             $inputFilter->add(array(
-                'name'     => 'name',
+                'name'     => 'kcalPer100g',
                 'required' => true,
                 'filters'  => array(
-                    array('name' => 'StripTags'),
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array(
-                        'name'    => 'StringLength',
-                        'options' => array(
-                            'encoding' => 'UTF-8',
-                            'min'      => 1,
-                            'max'      => 100,
-                        ),
-                    ),
+                    array('name' => 'Int'),
                 ),
             ));
 
