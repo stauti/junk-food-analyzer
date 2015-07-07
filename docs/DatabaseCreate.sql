@@ -6,40 +6,41 @@ ALTER DATABASE `junkFoodAnalyzer`
 DEFAULT CHARACTER SET utf8 
 DEFAULT COLLATE utf8_general_ci;
 
-CREATE TABLE User(
-  UserID INT NOT NULL,
-  Name VARCHAR(25),
-  Password VARCHAR(30),
+CREATE TABLE user(
+  userID INT NOT NULL,
+  name VARCHAR(25),
+  password VARCHAR(30),
   isAdmin BIT DEFAULT FALSE,
-  PRIMARY KEY (UserID)
+  PRIMARY KEY (userID)
 );
 
-CREATE TABLE Junkfood(
-  JunkfoodID INT NOT NULL ,
-  UserID INT NULL ,
-  JFName VARCHAR(50) NOT NULL ,
-  JFArt INT NOT NULL ,
-  JFKcal INT NOT NULL ,
+CREATE TABLE junkfood(
+  junkfoodID INT NOT NULL ,
+  userID INT NULL ,
+  name VARCHAR(50) NOT NULL ,
+  imgPath VARCHAR(60) NULL ,
+  art INT NOT NULL ,
+  kcal INT NOT NULL ,
   isVeggie BIT DEFAULT FALSE ,
-  PRIMARY KEY (JunkfoodID)
+  PRIMARY KEY (junkfoodID)
 );
 
-CREATE TABLE JunkfoodArt(
-  JFArtID INT NOT NULL ,
-  JFArt VARCHAR(25) ,
-  PRIMARY KEY (JFArt)
+CREATE TABLE junkfoodArt(
+  artID INT NOT NULL ,
+  art VARCHAR(25) ,
+  PRIMARY KEY (artID)
 );
 
-CREATE TABLE JunkfoodIngredients(
-  JunkfoodID INT NOT NULL ,
-  IngrID INT NOT NULL ,
-  Gramm INT NULL
+CREATE TABLE junkfoodIngredients(
+  junkfoodID INT NOT NULL ,
+  ingrID INT NOT NULL ,
+  gramm INT NULL
 );
 
-CREATE TABLE Ingredients(
-  IngrID INT NOT NULL ,
-  IngrName VARCHAR(50) ,
-  KcalPer100g INT NOT NULL ,
+CREATE TABLE ingredients(
+  ingrID INT NOT NULL ,
+  ingrName VARCHAR(50) ,
+  kcalPer100g INT NOT NULL ,
   isVeggie BIT DEFAULT FALSE ,
-  PRIMARY KEY (IngrID)
+  PRIMARY KEY (ingrID)
 );
