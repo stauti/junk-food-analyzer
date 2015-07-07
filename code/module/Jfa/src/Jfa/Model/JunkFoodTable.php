@@ -15,6 +15,7 @@ class JunkFoodTable
     public function fetchAll()
     {
         $resultSet = $this->tableGateway->select();
+
         return $resultSet;
     }
 
@@ -32,8 +33,9 @@ class JunkFoodTable
     public function saveJunkFood(JunkFood $junk)
     {
         $data = array(
-            'name' => $junk->name,
-            'type'  => $junk->type,
+            'JFNAME' => $junk->name,
+            'JFArt'  => $junk->type,
+            //todo weitere Felder
         );
 
         $id = (int)$junk->id;

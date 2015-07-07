@@ -8,8 +8,11 @@ use Zend\InputFilter\InputFilterInterface;
 class JunkFood
 {
     public $id;
+    public $userId;
     public $name;
     public $type;
+    public $kcal;
+    public $veggie = false;
 
     protected $inputFilter;
 
@@ -59,6 +62,33 @@ class JunkFood
                             'max'      => 100,
                         ),
                     ),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name'     => 'userId',
+                'required' => true,
+                'filters'  => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name'    => 'StringLength',
+                        'options' => array(
+                            'encoding' => 'UTF-8',
+                            'min'      => 1,
+                            'max'      => 100,
+                        ),
+                    ),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name'     => 'userId',
+                'required' => true,
+                'filters'  => array(
+                    array('name' => 'Int'),
                 ),
             ));
 

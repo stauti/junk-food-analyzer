@@ -1,6 +1,8 @@
 <?php
 namespace Jfa;
 
+use Jfa\Model\Ingredient;
+use Jfa\Model\User;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Jfa\Model\JunkFood;
@@ -52,7 +54,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                 'UserTableGateway' => function ($sm) {
                         $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                         $resultSetPrototype = new ResultSet();
-                        $resultSetPrototype->setArrayObjectPrototype(new JunkFood());
+                        $resultSetPrototype->setArrayObjectPrototype(new User());
                         return new TableGateway('user', $dbAdapter, null, $resultSetPrototype);
                     },
                 'Jfa\Model\IngredientTable' =>  function($sm) {
@@ -63,12 +65,12 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                 'IngredientTableGateway' => function ($sm) {
                         $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                         $resultSetPrototype = new ResultSet();
-                        $resultSetPrototype->setArrayObjectPrototype(new JunkFood());
+                        $resultSetPrototype->setArrayObjectPrototype(new Ingredient());
                         return new TableGateway('ingriedient', $dbAdapter, null, $resultSetPrototype);
                     },
-                'SanAuth\Model\MyAuthStorage' => function($sm){
-                        return new \Jfa\Model\AuthStorage('junkfood');
-                    },
+                #'SanAuth\Model\MyAuthStorage' => function($sm){
+                #        return new \Jfa\Model\AuthStorage('junkfood');
+                #    },
             ),
         );
     }
