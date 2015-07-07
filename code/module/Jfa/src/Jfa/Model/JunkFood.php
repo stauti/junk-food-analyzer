@@ -7,20 +7,25 @@ use Zend\InputFilter\InputFilterInterface;
 
 class JunkFood
 {
-    public $id;
-    public $userId;
+    public $junkfoodID;
+    public $userID;
     public $name;
-    public $type;
+    public $imgPath;
+    public $art;
     public $kcal;
-    public $veggie = false;
+    public $isVeggie = false;
 
     protected $inputFilter;
 
     public function exchangeArray($data)
     {
-        $this->id    = (!empty($data['id'])) ? $data['id'] : null;
+        $this->junkfoodID = (!empty($data['junkfoodID'])) ? $data['junkfoodID'] : null;
+        $this->userID = (!empty($data['userID'])) ? $data['userID'] : null;
         $this->name  = (!empty($data['name'])) ? $data['name'] : null;
-        $this->type  = (!empty($data['type'])) ? $data['type'] : null;
+        $this->imgPath = (!empty($data['imgPath'])) ? $data['imgPath'] : null;
+        $this->art  = (!empty($data['art'])) ? $data['art'] : null;
+        $this->kcal = (!empty($data['kcal'])) ? $data['kcal'] : null; ;
+        $this->isVeggie = (!empty($data['isVeggie'])) ? $data['isVeggie'] : null;
     }
 
     public function getArrayCopy()
@@ -47,7 +52,15 @@ class JunkFood
             ));
 
             $inputFilter->add(array(
-                'name'     => 'type',
+                'name'     => 'art',
+                'required' => true,
+                'filters'  => array(
+                    array('name' => 'Int'),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name'     => 'userID',
                 'required' => true,
                 'filters'  => array(
                     array('name' => 'StripTags'),
@@ -66,26 +79,15 @@ class JunkFood
             ));
 
             $inputFilter->add(array(
-                'name'     => 'userId',
+                'name'     => 'userID',
                 'required' => true,
                 'filters'  => array(
-                    array('name' => 'StripTags'),
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array(
-                        'name'    => 'StringLength',
-                        'options' => array(
-                            'encoding' => 'UTF-8',
-                            'min'      => 1,
-                            'max'      => 100,
-                        ),
-                    ),
+                    array('name' => 'Int'),
                 ),
             ));
 
             $inputFilter->add(array(
-                'name'     => 'userId',
+                'name'     => 'kcal',
                 'required' => true,
                 'filters'  => array(
                     array('name' => 'Int'),
