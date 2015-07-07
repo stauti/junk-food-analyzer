@@ -44,7 +44,7 @@ class JunkFood
             $inputFilter = new InputFilter();
 
             $inputFilter->add(array(
-                'name'     => 'id',
+                'name'     => 'junkfooID',
                 'required' => true,
                 'filters'  => array(
                     array('name' => 'Int'),
@@ -61,26 +61,7 @@ class JunkFood
 
             $inputFilter->add(array(
                 'name'     => 'userID',
-                'required' => true,
-                'filters'  => array(
-                    array('name' => 'StripTags'),
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array(
-                        'name'    => 'StringLength',
-                        'options' => array(
-                            'encoding' => 'UTF-8',
-                            'min'      => 1,
-                            'max'      => 100,
-                        ),
-                    ),
-                ),
-            ));
-
-            $inputFilter->add(array(
-                'name'     => 'userID',
-                'required' => true,
+                'required' => false,
                 'filters'  => array(
                     array('name' => 'Int'),
                 ),
