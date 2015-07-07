@@ -7,7 +7,7 @@ DEFAULT CHARACTER SET utf8
 DEFAULT COLLATE utf8_general_ci;
 
 CREATE TABLE user(
-  userID INT NOT NULL,
+  userID INT NOT NULL AUTO_INCREMENT,
   name VARCHAR(25),
   password VARCHAR(30),
   isAdmin BIT DEFAULT FALSE,
@@ -15,7 +15,7 @@ CREATE TABLE user(
 );
 
 CREATE TABLE junkfood(
-  junkfoodID INT NOT NULL ,
+  junkfoodID INT NOT NULL AUTO_INCREMENT,
   userID INT NULL ,
   name VARCHAR(50) NOT NULL ,
   imgPath VARCHAR(60) NULL ,
@@ -26,7 +26,7 @@ CREATE TABLE junkfood(
 );
 
 CREATE TABLE junkfoodArt(
-  artID INT NOT NULL ,
+  artID INT NOT NULL AUTO_INCREMENT,
   art VARCHAR(25) ,
   PRIMARY KEY (artID)
 );
@@ -38,7 +38,7 @@ CREATE TABLE junkfoodIngredients(
 );
 
 CREATE TABLE ingredients(
-  ingrID INT NOT NULL ,
+  ingrID INT NOT NULL AUTO_INCREMENT,
   ingrName VARCHAR(50) ,
   kcalPer100g INT NOT NULL ,
   isVeggie BIT DEFAULT FALSE ,
