@@ -16,12 +16,12 @@ $this->headTitle($title);
     <?php foreach ($junkfoods as $junk) : ?>
         <tr>
             <td><?php echo $this->escapeHtml($junk->name);?></td>
-            <td><?php echo $this->escapeHtml($junk->type);?></td>
+            <td><?php echo $this->escapeHtml($junk->art);?></td>
             <td>
                 <a href="<?php echo $this->url('junkfood',
-                    array('action'=>'edit', 'id' => $junk->id));?>">Edit</a>
+                    array('action'=>'edit', 'junkfoodID' => $junk->junkfoodID));?>">Edit</a>
                 <a href="<?php echo $this->url('junkfood',
-                    array('action'=>'delete', 'id' => $junk->id));?>">Delete</a>
+                    array('action'=>'delete', 'junkfoodID' => $junk->junkfoodID));?>">Delete</a>
             </td>
         </tr>
     <?php endforeach; ?>

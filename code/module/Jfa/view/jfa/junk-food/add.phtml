@@ -7,10 +7,13 @@ $this->headTitle($title);
 <?php
 $form->setAttribute('action', $this->url('junkfood', array('action' => 'add')));
 $form->prepare();
+$form->types = $this->types;
 
 echo $this->form()->openTag($form);
-echo $this->formHidden($form->get('id'));
-echo $this->formRow($form->get('name'));
-echo $this->formRow($form->get('type'));
-echo $this->formSubmit($form->get('submit'));
+echo $this->formHidden($form->get('junkfoodID'));
+echo $this->formRow($form->get('name')) . "<br>";
+echo $this->formRow($form->get('art')) . "<br>";
+echo $this->formRow($form->get('kcal')) . "<br>";
+echo $this->formRow($form->get('isVeggie')) . "<br>";
+echo $this->formSubmit($form->get('submit')) . "<br>";
 echo $this->form()->closeTag();

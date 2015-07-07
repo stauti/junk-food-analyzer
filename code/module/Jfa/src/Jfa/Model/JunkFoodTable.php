@@ -1,6 +1,7 @@
 <?php
 namespace Jfa\Model;
 
+use Zend\Db\Sql\Select;
 use Zend\Db\TableGateway\TableGateway;
 
 class JunkFoodTable
@@ -14,7 +15,10 @@ class JunkFoodTable
 
     public function fetchAll()
     {
-        $resultSet = $this->tableGateway->select();
+        $select = $this->tableGateway->getSql()->select()
+            ->join(array('type_table' => 'junkfoodArt'), 'type_table.artID = junkfood.junkfoodID', 'art');
+
+        $resultSet = $this->tableGateway->selectWith($select);
 
         return $resultSet;
     }
@@ -33,18 +37,21 @@ class JunkFoodTable
     public function saveJunkFood(JunkFood $junk)
     {
         $data = array(
-            'JFNAME' => $junk->name,
-            'JFArt'  => $junk->type,
-            //todo weitere Felder
+            'userID'        => $junk->userID,
+            'name'          => $junk->name,
+            'art'          => $junk->art,
+            'imgPath'       => $junk->imgPath,
+            'kcal'          => $junk->kcal,
+            'isVeggie'      => $junk->isVeggie ? 1 : 0,
         );
 
-        $id = (int)$junk->id;
+        $id = (int)$junk->junkfoodID;
         if ($id == 0) {
             $this->tableGateway->insert($data);
             $id = $this->tableGateway->getLastInsertValue();
         } else {
             if ($this->getJunkFood($id)) {
-                $this->tableGateway->update($data, array('id' => $id));
+                $this->tableGateway->update($data, array('junkfoodID' => $id));
             } else {
                 throw new \Exception('Form id does not exist');
             }
@@ -68,5 +75,19 @@ class JunkFoodTable
         }
 
         return $data[array_rand($data)];
+    }
+
+    public function getTypes()
+    {
+        $data = array();
+
+        $resultSet = $this->tableGateway->getAdapter()->driver->getConnection()
+            ->execute('SELECT * FROM junkfoodArt');
+
+        foreach ($resultSet as $result) {
+            $data[$result['artID']] = $result['art'];
+        }
+
+        return $data;
     }
 }

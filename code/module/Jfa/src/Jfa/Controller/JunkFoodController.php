@@ -14,12 +14,15 @@ class JunkFoodController extends AbstractActionController
     {
         return new ViewModel(array(
             'junkfoods' => $this->getJunkFoodTable()->fetchAll(),
+            'types'     => $this->getJunkFoodTable()->getTypes(),
         ));
     }
 
     public function addAction()
     {
-        $form = new JunkFoodForm();
+        $types = $this->getJunkFoodTable()->getTypes();
+
+        $form = new JunkFoodForm($types);
         $form->get('submit')->setValue('Add');
 
         $request = $this->getRequest();
@@ -28,13 +31,11 @@ class JunkFoodController extends AbstractActionController
             $form->setInputFilter($junk->getInputFilter());
             $form->setData($request->getPost());
 
-            if ($form->isValid()) {
-                $junk->exchangeArray($form->getData());
-                $this->getJunkFoodTable()->saveJunkFood($junk);
+            $junk->exchangeArray($request->getPost());
+            $this->getJunkFoodTable()->saveJunkFood($junk);
 
-                // Redirect to list of albums
-                return $this->redirect()->toRoute('junkfood');
-            }
+            // Redirect to list of albums
+            return $this->redirect()->toRoute('junkfood');
         }
 
         return array('form' => $form);

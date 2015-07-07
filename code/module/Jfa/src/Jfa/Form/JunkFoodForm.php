@@ -5,13 +5,13 @@ use Zend\Form\Form;
 
 class JunkFoodForm extends Form
 {
-    public function __construct($name = null)
+    public function __construct($types, $name = null)
     {
         // we want to ignore the name passed
         parent::__construct('junkfood');
 
         $this->add(array(
-            'name' => 'id',
+            'name' => 'junkfoodID',
             'type' => 'Hidden',
         ));
         $this->add(array(
@@ -22,10 +22,26 @@ class JunkFoodForm extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'type',
-            'type' => 'Text',
+            'name' => 'art',
+            'type' => 'Select',
             'options' => array(
                 'label' => 'Type',
+                'value_options' => $types,
+            ),
+        ));
+        $this->add(array(
+            'name' => 'isVeggie',
+            'type' => 'Select',
+            'options' => array(
+                'label' => 'Veggie?',
+                'value_options' => array(1 => 'Yes', 0 => 'No'),
+            ),
+        ));
+        $this->add(array(
+            'name' => 'kcal',
+            'type' => 'Text',
+            'options' => array(
+                'label' => 'Kcal',
             ),
         ));
         $this->add(array(
