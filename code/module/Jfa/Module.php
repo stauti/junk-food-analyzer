@@ -63,7 +63,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                         return new TableGateway('user', $dbAdapter, null, $resultSetPrototype);
                     },
                 'Jfa\Model\IngredientTable' =>  function($sm) {
-                        $tableGateway = $sm->get('UserTableGateway');
+                        $tableGateway = $sm->get('IngredientTableGateway');
                         $table = new IngredientTable($tableGateway);
                         return $table;
                     },
@@ -71,7 +71,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                         $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                         $resultSetPrototype = new ResultSet();
                         $resultSetPrototype->setArrayObjectPrototype(new Ingredient());
-                        return new TableGateway('ingriedient', $dbAdapter, null, $resultSetPrototype);
+                        return new TableGateway('ingredients', $dbAdapter, null, $resultSetPrototype);
                     },
                 'Jfa\Model\AuthStorage' => function($sm){
                         return new \Jfa\Model\AuthStorage('junk_users');

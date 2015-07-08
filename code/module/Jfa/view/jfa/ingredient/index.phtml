@@ -15,8 +15,8 @@ $this->headTitle($title);
     </tr>
     <?php foreach ($ingredients as $ingredient) : ?>
         <tr>
-            <td><?php echo $this->escapeHtml($ingredient->name);?></td>
-            <td><?php echo $this->escapeHtml($ingredient->type);?></td>
+            <td><?php echo $this->escapeHtml($ingredient->ingrName);?></td>
+            <td><?php echo $this->escapeHtml($ingredient->kcalPer100g);?></td>
             <td>
                 <a href="<?php echo $this->url('ingredient',
                     array('action'=>'edit', 'id' => $ingredient->id));?>">Edit</a>
