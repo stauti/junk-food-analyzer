@@ -50,7 +50,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                     },
                 'Jfa\Model\UserTable' =>  function($sm) {
                         $tableGateway = $sm->get('UserTableGateway');
-                        $table = new JunkFoodTable($tableGateway);
+                        $table = new UserTable($tableGateway);
                         return $table;
                     },
                 'UserTableGateway' => function ($sm) {

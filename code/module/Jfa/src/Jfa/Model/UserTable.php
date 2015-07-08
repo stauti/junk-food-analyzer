@@ -21,7 +21,7 @@ class UserTable
     public function getUser($id)
     {
         $id  = (int) $id;
-        $rowset = $this->tableGateway->select(array('id' => $id));
+        $rowset = $this->tableGateway->select(array('userID' => $id));
         $row = $rowset->current();
         if (!$row) {
             throw new \Exception("Could not find row $id");
@@ -32,17 +32,19 @@ class UserTable
     public function saveUser(User $user)
     {
         $data = array(
+            'userID' => $user->userID,
             'name' => $user->name,
-            'type'  => $user->type,
+            'password'  => $user->password,
+            'isAdmin' => $user->isAdmin
         );
 
-        $id = (int)$user->id;
+        $id = (int)$user->userID;
         if ($id == 0) {
             $this->tableGateway->insert($data);
             $id = $this->tableGateway->getLastInsertValue();
         } else {
             if ($this->getJunkFood($id)) {
-                $this->tableGateway->update($data, array('id' => $id));
+                $this->tableGateway->update($data, array('userID' => $id));
             } else {
                 throw new \Exception('Form id does not exist');
             }
@@ -53,6 +55,6 @@ class UserTable
 
     public function deleteUser($id)
     {
-        $this->tableGateway->delete(array('id' => (int) $id));
+        $this->tableGateway->delete(array('userID' => (int) $id));
     }
 }
