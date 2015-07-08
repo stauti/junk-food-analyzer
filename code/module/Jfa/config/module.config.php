@@ -23,7 +23,7 @@ return array(
                     ),
                 ),
             ),
-            'user' => array(
+            'users' => array(
                 'type'    => 'segment',
                 'options' => array(
                     'route'    => '/user[/:action][/:id]',
@@ -33,7 +33,7 @@ return array(
                     ),
                     'defaults' => array(
                         'controller' => 'Jfa\Controller\User',
-                        'action'     => 'login',
+                        'action'     => 'index',
                     ),
                 ),
             ),
