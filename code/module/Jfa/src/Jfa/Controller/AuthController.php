@@ -49,7 +49,7 @@ class AuthController extends AbstractActionController
     {
         //if already login, redirect to success page 
         if ($this->getAuthService()->hasIdentity()){
-            return $this->redirect()->toRoute('success');
+            return $this->redirect()->toRoute('home');
         }
 
         $form       = $this->getForm();

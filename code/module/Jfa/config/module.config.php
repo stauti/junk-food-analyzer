@@ -13,7 +13,7 @@ return array(
             'junkfood' => array(
                 'type'    => 'segment',
                 'options' => array(
-                    'route'    => '/backend[/:action][/:id]',
+                    'route'    => '/backend/junkfood[/:action][/:id]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'     => '[0-9]+',
@@ -27,7 +27,7 @@ return array(
             'users' => array(
                 'type'    => 'segment',
                 'options' => array(
-                    'route'    => '/user[/:action][/:id]',
+                    'route'    => '/backend/user[/:action][/:id]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'     => '[0-9]+',
@@ -41,7 +41,7 @@ return array(
             'ingredient' => array(
                 'type'    => 'segment',
                 'options' => array(
-                    'route'    => '/ingredient[/:action][/:id]',
+                    'route'    => '/backend/ingredient[/:action][/:id]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'     => '[0-9]+',
