@@ -31,6 +31,8 @@ class JunkFoodController extends AbstractActionController
             $form->setInputFilter($junk->getInputFilter());
             $form->setData($request->getPost());
 
+            $data = $request->getPost();
+
             $junk->exchangeArray($request->getPost());
             echo '<pre>DEBUG ('.__FILE__.' on line '.__LINE__.'): '.PHP_EOL; print_r($this->getIngredientTable()->getIngredientsByJunkfood($junk)); exit;
             $this->getJunkFoodTable()->saveJunkFood($junk);

@@ -64,8 +64,8 @@ class IngredientTable
             ->execute("
             SELECT * FROM ingredients
             LEFT JOIN junkfoodIngredients ON ingredients.ingrID = junkfoodIngredients.ingrID
-            WHERE junkfoodIngredients.junkfoodID = {$id}
-            ");
+            WHERE junkfoodIngredients.junkfoodID =
+            " . $id ? $id : 0);
 
         return $resultSet;
     }
