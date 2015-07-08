@@ -8,7 +8,7 @@ use Jfa\Form\UserForm;
 
 class UserController extends AbstractActionController
 {
-    protected $userFoodTable;
+    protected $userTable;
 
     public function indexAction()
     {
@@ -33,7 +33,7 @@ class UserController extends AbstractActionController
                 $this->getUserTable()->saveUser($user);
 
                 // Redirect to list of albums
-                return $this->redirect()->toRoute('user');
+                return $this->redirect()->toRoute('users');
             }
         }
         return array('form' => $form);
@@ -110,10 +110,10 @@ class UserController extends AbstractActionController
 
     public function getUserTable()
     {
-        if (!$this->junkFoodTable) {
+        if (!$this->userTable) {
             $sm = $this->getServiceLocator();
-            $this->junkFoodTable = $sm->get('Jfa\Model\UserTable');
+            $this->userTable = $sm->get('Jfa\Model\UserTable');
         }
-        return $this->junkFoodTable;
+        return $this->userTable;
     }
 }

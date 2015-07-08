@@ -4,24 +4,30 @@ $this->headTitle($title);
 ?>
 <h1><?php echo $this->escapeHtml($title); ?></h1>
 <p>
-    <a href="<?php echo $this->url('user', array('action'=>'add'));?>">Add new user</a>
+    <a href="<?php echo $this->url('users', array('action'=>'add'));?>">Add new user</a>
 </p>
 
 <table class="table">
     <tr>
         <th>Name</th>
-        <th>Type</th>
-        <th>&nbsp;</th>
+        <th>Admin</th>
+        <th>Options</th>
     </tr>
     <?php foreach ($users as $user) : ?>
         <tr>
             <td><?php echo $this->escapeHtml($user->name);?></td>
-            <td><?php echo $this->escapeHtml($user->type);?></td>
+            <td><?php
+                    if($user->isAdmin == true)
+                        echo "YES";
+                    else
+                        echo "NO";
+                ?>
+            </td>
             <td>
-                <a href="<?php echo $this->url('user',
-                    array('action'=>'edit', 'id' => $user->id));?>">Edit</a>
-                <a href="<?php echo $this->url('user',
-                    array('action'=>'delete', 'id' => $user->id));?>">Delete</a>
+                <a href="<?php echo $this->url('users',
+                    array('action'=>'edit', 'id' => $user->userID));?>">Edit</a> |
+                <a href="<?php echo $this->url('users',
+                    array('action'=>'delete', 'id' => $user->userID));?>">Delete</a>
             </td>
         </tr>
     <?php endforeach; ?>
