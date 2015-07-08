@@ -5,6 +5,7 @@ return array(
             'Jfa\Controller\JunkFood' => 'Jfa\Controller\JunkFoodController',
             'Jfa\Controller\User' => 'Jfa\Controller\UserController',
             'Jfa\Controller\Ingredient' => 'Jfa\Controller\IngredientController',
+            'Jfa\Controller\Auth' => 'Jfa\Controller\AuthController',
         ),
     ),
     'router' => array(
@@ -48,6 +49,32 @@ return array(
                     'defaults' => array(
                         'controller' => 'Jfa\Controller\Ingredient',
                         'action'     => 'index',
+                    ),
+                ),
+            ),
+            'login' => array(
+                'type'    => 'Literal',
+                'options' => array(
+                    'route'    => '/auth',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Jfa\Controller',
+                        'controller'    => 'Auth',
+                        'action'        => 'login',
+                    ),
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'process' => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => '/[:action]',
+                            'constraints' => array(
+                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                            ),
+                            'defaults' => array(
+                            ),
+                        ),
                     ),
                 ),
             ),

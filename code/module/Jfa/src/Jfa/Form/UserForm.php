@@ -11,7 +11,7 @@ class UserForm extends Form
         parent::__construct('user');
 
         $this->add(array(
-            'name' => 'id',
+            'name' => 'userID',
             'type' => 'Hidden',
         ));
         $this->add(array(
@@ -22,7 +22,7 @@ class UserForm extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'type',
+            'name' => 'password',
             'type' => 'Text',
             'options' => array(
                 'label' => 'Type',

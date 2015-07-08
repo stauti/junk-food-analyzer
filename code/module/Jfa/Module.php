@@ -11,6 +11,9 @@ use Jfa\Model\JunkFood;
 use Jfa\Model\JunkFoodTable;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
+use Zend\Authentication\Storage;
+use Zend\Authentication\AuthenticationService;
+use Zend\Authentication\Adapter\DbTable as DbTableAuthAdapter;
 
 class Module implements AutoloaderProviderInterface, ConfigProviderInterface
 {
@@ -50,7 +53,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                     },
                 'Jfa\Model\UserTable' =>  function($sm) {
                         $tableGateway = $sm->get('UserTableGateway');
-                        $table = new JunkFoodTable($tableGateway);
+                        $table = new UserTable($tableGateway);
                         return $table;
                     },
                 'UserTableGateway' => function ($sm) {
@@ -70,9 +73,20 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                         $resultSetPrototype->setArrayObjectPrototype(new Ingredient());
                         return new TableGateway('ingriedient', $dbAdapter, null, $resultSetPrototype);
                     },
-                #'SanAuth\Model\MyAuthStorage' => function($sm){
-                #        return new \Jfa\Model\AuthStorage('junkfood');
-                #    },
+                'Jfa\Model\AuthStorage' => function($sm){
+                        return new \Jfa\Model\AuthStorage('junk_users');
+                    },
+                'AuthService' => function($sm) {
+                        $dbAdapter           = $sm->get('Zend\Db\Adapter\Adapter');
+                        $dbTableAuthAdapter  = new DbTableAuthAdapter($dbAdapter,
+                            'user','name','password', '');
+
+                        $authService = new AuthenticationService();
+                        $authService->setAdapter($dbTableAuthAdapter);
+                        $authService->setStorage($sm->get('Jfa\Model\AuthStorage'));
+
+                        return $authService;
+                    },
             ),
         );
     }
