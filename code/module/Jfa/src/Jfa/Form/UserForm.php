@@ -25,8 +25,15 @@ class UserForm extends Form
             'name' => 'password',
             'type' => 'Text',
             'options' => array(
-                'label' => 'Type',
+                'label' => 'Passwort',
             ),
+        ));
+        $this->add(array(
+           'name' => 'isAdmin',
+           'type' => 'Checkbox',
+           'options' => array(
+                'label' => 'Admin',
+           ),
         ));
         $this->add(array(
             'name' => 'submit',

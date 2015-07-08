@@ -43,7 +43,7 @@ class UserTable
             $this->tableGateway->insert($data);
             $id = $this->tableGateway->getLastInsertValue();
         } else {
-            if ($this->getJunkFood($id)) {
+            if ($this->getUser($id)) {
                 $this->tableGateway->update($data, array('userID' => $id));
             } else {
                 throw new \Exception('Form id does not exist');

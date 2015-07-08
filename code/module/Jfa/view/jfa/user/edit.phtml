@@ -8,7 +8,7 @@ $this->headTitle($title);
 <?php
 $form = $this->form;
 $form->setAttribute('action', $this->url(
-    'user',
+    'users',
     array(
         'action' => 'edit',
         'id'     => $this->id,
@@ -17,8 +17,9 @@ $form->setAttribute('action', $this->url(
 $form->prepare();
 
 echo $this->form()->openTag($form);
-echo $this->formHidden($form->get('id'));
-echo $this->formRow($form->get('name'));
-echo $this->formRow($form->get('type'));
+echo $this->formHidden($form->get('userID'));
+echo $this->formRow($form->get('name')) . "<br>";
+echo $this->formRow($form->get('password')) . "<br>";
+echo $this->formRow($form->get('isAdmin')) . "<br>";
 echo $this->formSubmit($form->get('submit'));
 echo $this->form()->closeTag();
