@@ -72,7 +72,7 @@ class UserController extends AbstractActionController
                 $this->getUserTable()->saveUser($user);
 
                 // Redirect to list of albums
-                return $this->redirect()->toRoute('user');
+                return $this->redirect()->toRoute('users');
             }
         }
 
@@ -86,7 +86,7 @@ class UserController extends AbstractActionController
     {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('user');
+            return $this->redirect()->toRoute('users');
         }
 
         $request = $this->getRequest();
@@ -99,7 +99,7 @@ class UserController extends AbstractActionController
             }
 
             // Redirect to list of users
-            return $this->redirect()->toRoute('user');
+            return $this->redirect()->toRoute('users');
         }
 
         return array(
