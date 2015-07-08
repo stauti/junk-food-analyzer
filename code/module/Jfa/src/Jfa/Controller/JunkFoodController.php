@@ -10,6 +10,7 @@ class JunkFoodController extends AbstractActionController
 {
     protected $junkFoodTable;
     protected $ingredientTable;
+    protected $relationTable;
 
     public function indexAction()
     {
@@ -22,7 +23,7 @@ class JunkFoodController extends AbstractActionController
     {
         $types = $this->getJunkFoodTable()->getTypes();
 
-        $form = new JunkFoodForm($types);
+        $form = new JunkFoodForm($types, $this->getIngredientTable()->fetchAll());
         $form->get('submit')->setValue('Add');
 
         $request = $this->getRequest();
@@ -33,7 +34,17 @@ class JunkFoodController extends AbstractActionController
 
             $junk->exchangeArray($request->getPost());
 
-            $this->getJunkFoodTable()->saveJunkFood($junk);
+            $id = $this->getJunkFoodTable()->saveJunkFood($junk);
+
+            $post = $request->getPost();
+
+            foreach ($post['ingredients'] as $key => $value) {
+                if (isset($value['selected'])) {
+                    $data = array('ingrID' => $key, 'junkfoodID' => $id, 'gramm' => $value['gramm']);
+
+                    $this->getRelationTable()->saveRelation($data);
+                }
+            }
 
             // Redirect to list of albums
             return $this->redirect()->toRoute('junkfood');
@@ -63,7 +74,7 @@ class JunkFoodController extends AbstractActionController
         }
         $types = $this->getJunkFoodTable()->getTypes();
 
-        $form  = new JunkFoodForm($types);
+        $form  = new JunkFoodForm($types, $this->getIngredientTable()->fetchAll());
         $form->bind($junk);
         $form->get('submit')->setAttribute('value', 'Edit');
 
@@ -139,5 +150,14 @@ class JunkFoodController extends AbstractActionController
             $this->ingredientTable = $sm->get('Jfa\Model\IngredientTable');
         }
         return $this->ingredientTable;
+    }
+
+    public function getRelationTable()
+    {
+        if (!$this->relationTable) {
+            $sm = $this->getServiceLocator();
+            $this->relationTable = $sm->get('Jfa\Model\JunkFoodIngredientTable');
+        }
+        return $this->relationTable;
     }
 }

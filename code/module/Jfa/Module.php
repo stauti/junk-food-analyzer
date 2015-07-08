@@ -3,6 +3,7 @@ namespace Jfa;
 
 use Jfa\Model\Ingredient;
 use Jfa\Model\IngredientTable;
+use Jfa\Model\JunkFoodIngredientTable;
 use Jfa\Model\User;
 use Jfa\Model\UserTable;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
@@ -14,6 +15,7 @@ use Zend\Db\TableGateway\TableGateway;
 use Zend\Authentication\Storage;
 use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Adapter\DbTable as DbTableAuthAdapter;
+use Zend\Stdlib\ArrayObject;
 
 class Module implements AutoloaderProviderInterface, ConfigProviderInterface
 {
@@ -63,7 +65,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                         return new TableGateway('user', $dbAdapter, null, $resultSetPrototype);
                     },
                 'Jfa\Model\IngredientTable' =>  function($sm) {
-                        $tableGateway = $sm->get('UserTableGateway');
+                        $tableGateway = $sm->get('IngredientTableGateway');
                         $table = new IngredientTable($tableGateway);
                         return $table;
                     },
@@ -71,7 +73,18 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                         $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                         $resultSetPrototype = new ResultSet();
                         $resultSetPrototype->setArrayObjectPrototype(new Ingredient());
-                        return new TableGateway('ingriedient', $dbAdapter, null, $resultSetPrototype);
+                        return new TableGateway('ingredients', $dbAdapter, null, $resultSetPrototype);
+                    },
+                'Jfa\Model\JunkFoodIngredientTable' =>  function($sm) {
+                        $tableGateway = $sm->get('JunkFoodIngredientTableGateway');
+                        $table = new JunkFoodIngredientTable($tableGateway);
+                        return $table;
+                    },
+                'JunkFoodIngredientTableGateway' => function ($sm) {
+                        $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                        $resultSetPrototype = new ResultSet();
+                        $resultSetPrototype->setArrayObjectPrototype(new \ArrayObject());
+                        return new TableGateway('junkfoodIngredients', $dbAdapter, null, $resultSetPrototype);
                     },
                 'Jfa\Model\AuthStorage' => function($sm){
                         return new \Jfa\Model\AuthStorage('junk_users');

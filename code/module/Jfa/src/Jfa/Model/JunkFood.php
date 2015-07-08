@@ -15,6 +15,8 @@ class JunkFood
     public $kcal;
     public $isVeggie = false;
 
+    public $ingredients = array();
+
     protected $inputFilter;
 
     public function exchangeArray($data)
@@ -25,7 +27,8 @@ class JunkFood
         $this->imgPath = (!empty($data['imgPath'])) ? $data['imgPath'] : null;
         $this->art  = (!empty($data['art'])) ? $data['art'] : null;
         $this->kcal = (!empty($data['kcal'])) ? $data['kcal'] : null; ;
-        $this->isVeggie = (!empty($data['isVeggie'])) ? $data['isVeggie'] : null;
+        $this->isVeggie = (!empty($data['isVeggie'])) ? $data['isVeggie'] : false;
+        $this->ingredients = (!empty($data['ingredients'])) ? $data['ingredients'] : array();
     }
 
     public function getArrayCopy()

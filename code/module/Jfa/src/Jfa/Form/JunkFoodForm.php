@@ -5,8 +5,12 @@ use Zend\Form\Form;
 
 class JunkFoodForm extends Form
 {
-    public function __construct($types, $name = null)
+    public $ingredients = array();
+
+    public function __construct($types, $ingredients, $name = null)
     {
+        $this->ingredients = $ingredients;
+
         // we want to ignore the name passed
         parent::__construct('junkfood');
 

@@ -13,6 +13,27 @@ echo $this->form()->openTag($form);
 echo $this->formHidden($form->get('junkfoodID'));
 echo $this->formRow($form->get('name')) . "<br>";
 echo $this->formRow($form->get('art')) . "<br>";
+?>
+<table>
+    <thead>
+        <tr>
+            <td>#</td>
+            <td>Name</td>
+            <td>Gramm</td>
+        </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($form->ingredients as $ingredient) : ?>
+        <tr>
+            <td><input type="checkbox" name="ingredients[<?php echo $ingredient->ingrID; ?>][selected]"></td>
+            <td><?php echo $ingredient->ingrName; ?></td>
+            <td><input type="text" name="ingredients[<?php echo $ingredient->ingrID; ?>][gramm]"></td>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>
+
+<?php
 echo $this->formRow($form->get('kcal')) . "<br>";
 echo $this->formRow($form->get('isVeggie')) . "<br>";
 echo $this->formSubmit($form->get('submit')) . "<br>";
