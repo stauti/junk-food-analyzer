@@ -1,7 +1,9 @@
 <?php
 namespace Jfa\Model;
 
+use Zend\Db\Sql\Insert;
 use Zend\Db\Sql\Select;
+use Zend\Db\Sql\Sql;
 use Zend\Db\TableGateway\TableGateway;
 
 class JunkFoodTable
@@ -39,7 +41,7 @@ class JunkFoodTable
         $data = array(
             'userID'        => $junk->userID,
             'name'          => $junk->name,
-            'art'          => $junk->art,
+            'art'           => $junk->art,
             'imgPath'       => $junk->imgPath,
             'kcal'          => $junk->kcal,
             'isVeggie'      => $junk->isVeggie ? 1 : 0,
