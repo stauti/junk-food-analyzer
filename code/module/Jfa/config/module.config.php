@@ -3,6 +3,8 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'Jfa\Controller\JunkFood' => 'Jfa\Controller\JunkFoodController',
+            'Jfa\Controller\User' => 'Jfa\Controller\UserController',
+            'Jfa\Controller\Ingredient' => 'Jfa\Controller\IngredientController',
         ),
     ),
     'router' => array(
