@@ -18,7 +18,7 @@ class IngredientTable
         return $resultSet;
     }
 
-    public function getIngredientFood($id)
+    public function getIngredient($id)
     {
         $id  = (int) $id;
         $rowset = $this->tableGateway->select(array('id' => $id));
@@ -29,7 +29,7 @@ class IngredientTable
         return $row;
     }
 
-    public function saveIngredientFood(JunkFood $ingr)
+    public function saveIngredient(Ingredient $ingr)
     {
         $data = array(
             'name' => $ingr->name,
@@ -41,7 +41,7 @@ class IngredientTable
             $this->tableGateway->insert($data);
             $id = $this->tableGateway->getLastInsertValue();
         } else {
-            if ($this->getJunkFood($id)) {
+            if ($this->getIngredient($id)) {
                 $this->tableGateway->update($data, array('id' => $id));
             } else {
                 throw new \Exception('Form id does not exist');
@@ -51,7 +51,7 @@ class IngredientTable
         return $id;
     }
 
-    public function deleteJunkFood($id)
+    public function deleteIngredient($id)
     {
         $this->tableGateway->delete(array('id' => (int) $id));
     }
