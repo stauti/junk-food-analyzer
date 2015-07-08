@@ -21,7 +21,7 @@ class IngredientTable
     public function getIngredient($id)
     {
         $id  = (int) $id;
-        $rowset = $this->tableGateway->select(array('id' => $id));
+        $rowset = $this->tableGateway->select(array('ingrID' => $id));
         $row = $rowset->current();
         if (!$row) {
             throw new \Exception("Could not find row $id");
@@ -32,17 +32,18 @@ class IngredientTable
     public function saveIngredient(Ingredient $ingr)
     {
         $data = array(
-            'name' => $ingr->name,
-            'type'  => $ingr->type,
+            'ingrName' => $ingr->ingrName,
+            'kcalPer100g'  => $ingr->kcalPer100g,
+            'isVeggie' => $ingr->isVeggie
         );
 
-        $id = (int)$ingr->id;
+        $id = (int)$ingr->ingrID;
         if ($id == 0) {
             $this->tableGateway->insert($data);
             $id = $this->tableGateway->getLastInsertValue();
         } else {
             if ($this->getIngredient($id)) {
-                $this->tableGateway->update($data, array('id' => $id));
+                $this->tableGateway->update($data, array('ingrID' => $id));
             } else {
                 throw new \Exception('Form id does not exist');
             }
@@ -53,7 +54,7 @@ class IngredientTable
 
     public function deleteIngredient($id)
     {
-        $this->tableGateway->delete(array('id' => (int) $id));
+        $this->tableGateway->delete(array('ingrID' => (int) $id));
     }
 
     public function getIngredientsByJunkfood(JunkFood $junk)
