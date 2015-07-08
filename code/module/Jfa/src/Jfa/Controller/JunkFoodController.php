@@ -9,12 +9,12 @@ use Jfa\Form\JunkFoodForm;
 class JunkFoodController extends AbstractActionController
 {
     protected $junkFoodTable;
+    protected $ingredientTable;
 
     public function indexAction()
     {
         return new ViewModel(array(
             'junkfoods' => $this->getJunkFoodTable()->fetchAll(),
-            'types'     => $this->getJunkFoodTable()->getTypes(),
         ));
     }
 
@@ -32,6 +32,7 @@ class JunkFoodController extends AbstractActionController
             $form->setData($request->getPost());
 
             $junk->exchangeArray($request->getPost());
+            echo '<pre>DEBUG ('.__FILE__.' on line '.__LINE__.'): '.PHP_EOL; print_r($this->getIngredientTable()->getIngredientsByJunkfood($junk)); exit;
             $this->getJunkFoodTable()->saveJunkFood($junk);
 
             // Redirect to list of albums
@@ -60,8 +61,9 @@ class JunkFoodController extends AbstractActionController
                 'action' => 'index'
             ));
         }
+        $types = $this->getJunkFoodTable()->getTypes();
 
-        $form  = new JunkFoodForm();
+        $form  = new JunkFoodForm($types);
         $form->bind($junk);
         $form->get('submit')->setAttribute('value', 'Edit');
 
@@ -128,5 +130,14 @@ class JunkFoodController extends AbstractActionController
             $this->junkFoodTable = $sm->get('Jfa\Model\JunkFoodTable');
         }
         return $this->junkFoodTable;
+    }
+
+    public function getIngredientTable()
+    {
+        if (!$this->ingredientTable) {
+            $sm = $this->getServiceLocator();
+            $this->ingredientTable = $sm->get('Jfa\Model\IngredientTable');
+        }
+        return $this->ingredientTable;
     }
 }

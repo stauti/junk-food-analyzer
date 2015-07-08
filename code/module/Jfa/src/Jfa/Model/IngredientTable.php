@@ -18,7 +18,7 @@ class IngredientTable
         return $resultSet;
     }
 
-    public function getJunkFood($id)
+    public function getIngredientFood($id)
     {
         $id  = (int) $id;
         $rowset = $this->tableGateway->select(array('id' => $id));
@@ -29,14 +29,14 @@ class IngredientTable
         return $row;
     }
 
-    public function saveJunkFood(JunkFood $junk)
+    public function saveIngredientFood(JunkFood $ingr)
     {
         $data = array(
-            'name' => $junk->name,
-            'type'  => $junk->type,
+            'name' => $ingr->name,
+            'type'  => $ingr->type,
         );
 
-        $id = (int)$junk->id;
+        $id = (int)$ingr->id;
         if ($id == 0) {
             $this->tableGateway->insert($data);
             $id = $this->tableGateway->getLastInsertValue();
@@ -54,5 +54,19 @@ class IngredientTable
     public function deleteJunkFood($id)
     {
         $this->tableGateway->delete(array('id' => (int) $id));
+    }
+
+    public function getIngredientsByJunkfood(JunkFood $junk)
+    {
+        $id = $junk->junkfoodID;
+
+        $resultSet = $this->tableGateway->getAdapter()->driver->getConnection()
+            ->execute("
+            SELECT * FROM ingredients
+            LEFT JOIN junkfoodIngredients ON ingredients.ingrID = junkfoodIngredients.ingrID
+            WHERE junkfoodIngredients.junkfoodID = {$id}
+            ");
+
+        return $resultSet;
     }
 }

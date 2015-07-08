@@ -2,7 +2,9 @@
 namespace Jfa;
 
 use Jfa\Model\Ingredient;
+use Jfa\Model\IngredientTable;
 use Jfa\Model\User;
+use Jfa\Model\UserTable;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Jfa\Model\JunkFood;
@@ -59,7 +61,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                     },
                 'Jfa\Model\IngredientTable' =>  function($sm) {
                         $tableGateway = $sm->get('UserTableGateway');
-                        $table = new JunkFoodTable($tableGateway);
+                        $table = new IngredientTable($tableGateway);
                         return $table;
                     },
                 'IngredientTableGateway' => function ($sm) {
