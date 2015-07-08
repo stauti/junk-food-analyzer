@@ -8,7 +8,7 @@ use Jfa\Form\IngredientForm;
 
 class IngredientController extends AbstractActionController
 {
-    protected $ingredientFoodTable;
+    protected $ingredientTable;
 
     public function indexAction()
     {
@@ -110,10 +110,10 @@ class IngredientController extends AbstractActionController
 
     public function getIngredientTable()
     {
-        if (!$this->junkFoodTable) {
+        if (!$this->ingredientTable) {
             $sm = $this->getServiceLocator();
-            $this->junkFoodTable = $sm->get('Jfa\Model\IngredientTable');
+            $this->ingredientTable = $sm->get('Jfa\Model\IngredientTable');
         }
-        return $this->junkFoodTable;
+        return $this->ingredientTable;
     }
 }

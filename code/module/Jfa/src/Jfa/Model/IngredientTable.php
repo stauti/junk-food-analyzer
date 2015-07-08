@@ -55,4 +55,18 @@ class IngredientTable
     {
         $this->tableGateway->delete(array('id' => (int) $id));
     }
+
+    public function getIngredientsByJunkfood(JunkFood $junk)
+    {
+        $id = $junk->junkfoodID;
+
+        $resultSet = $this->tableGateway->getAdapter()->driver->getConnection()
+            ->execute("
+            SELECT * FROM ingredients
+            LEFT JOIN junkfoodIngredients ON ingredients.ingrID = junkfoodIngredients.ingrID
+            WHERE junkfoodIngredients.junkfoodID =
+            " . $id ? $id : 0);
+
+        return $resultSet;
+    }
 }
