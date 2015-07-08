@@ -10,7 +10,7 @@ class UserController extends AbstractActionController
 {
     protected $userFoodTable;
 
-    public function indexAction()
+    public function loginAction()
     {
         return new ViewModel(array(
             'users' => $this->getUserTable()->fetchAll(),
