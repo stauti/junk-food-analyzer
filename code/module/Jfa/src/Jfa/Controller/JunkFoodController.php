@@ -37,14 +37,15 @@ class JunkFoodController extends AbstractActionController
             $id = $this->getJunkFoodTable()->saveJunkFood($junk);
 
             $post = $request->getPost();
+            $data = array();
 
             foreach ($post['ingredients'] as $key => $value) {
                 if (isset($value['selected'])) {
-                    $data = array('ingrID' => $key, 'junkfoodID' => $id, 'gramm' => $value['gramm']);
-
-                    $this->getRelationTable()->saveRelation($data);
+                    $data[] = array('ingrID' => $key, 'junkfoodID' => $id, 'gramm' => $value['gramm']);
                 }
             }
+
+            $this->getRelationTable()->saveRelation($data);
 
             // Redirect to list of albums
             return $this->redirect()->toRoute('junkfood');
