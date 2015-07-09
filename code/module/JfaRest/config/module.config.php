@@ -3,7 +3,7 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'JfaRest\Controller\JunkFoodRest' => 'JfaRest\Controller\JunkFoodRestController',
-            'JfaRest\Controller\IngredientsRest' => 'JfaRest\Controller\IngredientsRestController'
+            'JfaRest\Controller\IngredientsRest' => 'JfaRest\Controller\IngredientsRestController',
             'JfaRest\Controller\UserRest' => 'JfaRest\Controller\UserRestController',
         ),
     ),
