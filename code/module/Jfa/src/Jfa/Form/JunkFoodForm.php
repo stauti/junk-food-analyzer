@@ -7,7 +7,7 @@ class JunkFoodForm extends Form
 {
     public $ingredients = array();
 
-    public function __construct($types, $ingredients, $name = null)
+    public function __construct($types = array(), $ingredients = array(), $name = null)
     {
         $this->ingredients = $ingredients;
 

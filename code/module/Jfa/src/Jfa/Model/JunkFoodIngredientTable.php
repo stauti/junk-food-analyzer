@@ -15,11 +15,17 @@ class JunkFoodIngredientTable
         $this->tableGateway = $tableGateway;
     }
 
-    public function saveRelation(array $data)
+    public function saveRelation($data, $junkfoodId = null)
     {
-        $this->tableGateway->insert($data);
-        $id = $this->tableGateway->getLastInsertValue();
+        if ($junkfoodId) {
+            $this->tableGateway->delete("junkfoodID = {$junkfoodId}");
+        }
 
-        return $id;
+        foreach ($data as $entry) {
+            $this->tableGateway->insert($entry);
+            $this->tableGateway->getLastInsertValue();
+        }
+
+        return;
     }
 }

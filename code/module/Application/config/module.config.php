@@ -31,7 +31,7 @@ return array(
                     'defaults' => array(
                         '__NAMESPACE__' => 'Application\Controller',
                         'controller'    => 'Index',
-                        'action'        => 'index',
+                        'action'        => 'list',
                     ),
                 ),
                 'may_terminate' => true,

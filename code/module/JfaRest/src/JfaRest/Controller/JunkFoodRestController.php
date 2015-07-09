@@ -4,8 +4,6 @@ namespace JfaRest\Controller;
 use Zend\Mvc\Controller\AbstractRestfulController;
 
 use Jfa\Model\JunkFood;
-use Jfa\Form\JunkFoodForm;
-use Jfa\Model\JunkFoodTable;
 use Zend\View\Model\JsonModel;
 
 class JunkFoodRestController extends AbstractRestfulController
@@ -13,6 +11,7 @@ class JunkFoodRestController extends AbstractRestfulController
     protected $junkFoodTable;
     protected $ingredientTable;
     protected $userTable;
+    protected $relationTable;
 
     protected $userName = false;
     protected $authservice;
@@ -56,9 +55,20 @@ class JunkFoodRestController extends AbstractRestfulController
 
     public function get($id)
     {
-        $data = $this->getJunkFoodTable()->getJunkFood($id);
+        if ($id == 'drogo') {
+            $data = $this->getJunkFoodTable()->getDrogoSugestion();
+        } else {
+            try {
+                $data = $this->getJunkFoodTable()->getJunkFood($id);
+            } catch (\Exception $e) {
+                return new JsonModel(array(
+                    'status' => 'failure',
+                    'message' => 'Could not find Junkfood with the ID: ' . $id,
+                ));
+            }
+        }
 
-        $result = new JsonModel(array('data' => $data));
+        $result = new JsonModel(array($data));
         return $result;
     }
 
@@ -69,36 +79,125 @@ class JunkFoodRestController extends AbstractRestfulController
         if ($this->getAuthService()->hasIdentity()){
             $this->userName = $this->getAuthService()->getIdentity();
             $userId = $this->getUserTable()->getUserByName($this->userName);
+        } else {
+            return new JsonModel(array(
+                'status' => 'failure',
+                'message' => 'You have to log in first'
+            ));
         }
 
-        $data['userID'] = $userId;
+        $data['userID'] = $userId->userID;
 
         $junk = new JunkFood();
         $junk->exchangeArray($data);
-        $id = $this->getJunkFoodTable()->saveJunkFood($junk);
+
+        try {
+            $id = $this->getJunkFoodTable()->saveJunkFood($junk);
+        } catch (\Exception $e) {
+            return new JsonModel(array(
+                'status' => 'failure',
+                'message' => 'Failed to create Junkfood please check your request',
+            ));
+        }
+
+        if (isset($data['ingredients']) && !empty($data['ingredients'])) {
+            $relations = array();
+
+            foreach ($data['ingredients'] as $ingredient) {
+                $relations[] = array('ingrID' => $ingredient['ingrID'], 'junkfoodID' => $id, 'gramm' => $ingredient['gramm']);
+            }
+
+            $this->getRelationTable()->saveRelation($relations);
+        }
 
         return new JsonModel(array(
-            'data' => 'Successfully saved with ID: ' . $id,
+            'status' => 'success',
+            'message' => 'Junkfood successfully created.'
         ));
     }
 
     public function update($id, $data)
     {
-        $data['id'] = $id;
-        $junk = $this->getJunkFoodTable()->getJunkFood($id);
-        $id = $this->getJunkFoodTable()->saveJunkFood($junk);
+        if ($this->getAuthService()->hasIdentity()){
+            $this->userName = $this->getAuthService()->getIdentity();
+            $user = $this->getUserTable()->getUserByName($this->userName);
+        } else {
+            return new JsonModel(array(
+                'status' => 'failure',
+                'message' => 'You have to log in first'
+            ));
+        }
+
+        try {
+            $junk = $this->getJunkFoodTable()->getJunkFood($id);
+        } catch (\Exception $e) {
+            return new JsonModel(array(
+                'status' => 'failure',
+                'message' => 'Failed to get the Junkfood with the ID: ' . $id,
+            ));
+        }
+
+        if ($junk->userID == $user->userID) {
+            try {
+                $junk->exchangeArray($data);
+                $junk->junkfoodID = $id;
+                $id = $this->getJunkFoodTable()->saveJunkFood($junk);
+            } catch (\Exception $e) {
+                return new JsonModel(array(
+                    'status' => 'failure',
+                    'message' => 'Failed to update the Junkfood please check your request',
+                ));
+            }
+        } else {
+            return new JsonModel(array(
+                'status' => 'failure',
+                'message' => 'You may only update your own junk',
+            ));
+        }
+
+        if (isset($data['ingredients']) && !empty($data['ingredients'])) {
+            $relations = array();
+
+            foreach ($data['ingredients'] as $ingredient) {
+                $relations[] = array('ingrID' => $ingredient['ingrID'], 'junkfoodID' => $id, 'gramm' => $ingredient['gramm']);
+            }
+
+            $this->getRelationTable()->saveRelation($relations, $id);
+        }
 
         return new JsonModel(array(
-            'data' => 'Successfully updated ' . $junk->type . ' with ID: ' . $id,
+            'status' => 'success',
+            'message' => "Junkfood {$junk->name} successfully updated."
         ));
     }
 
     public function delete($id)
     {
-        $this->getJunkFoodTable()->deleteJunkFood($id);
+        if ($this->getAuthService()->hasIdentity()){
+            $this->userName = $this->getAuthService()->getIdentity();
+            $user = $this->getUserTable()->getUserByName($this->userName);
+        } else {
+            return new JsonModel(array(
+                'status' => 'failure',
+                'message' => 'You have to log in first'
+            ));
+        }
+
+        $junk = $this->getJunkFoodTable()->getJunkFood($id);
+
+        if ($junk->userID == $user->userID) {
+            $this->getRelationTable()->saveRelation(array(), $id);
+            $this->getJunkFoodTable()->deleteJunkFood($id);
+
+            return new JsonModel(array(
+                'status' => 'success',
+                'message' => "Junkfood {$junk->name} successfully deleted!"
+            ));
+        }
 
         return new JsonModel(array(
-            'data' => 'deleted',
+            'status' => 'failure',
+            'message' => "You may only delete your own junk!"
         ));
     }
 
@@ -128,4 +227,15 @@ class JunkFoodRestController extends AbstractRestfulController
         }
         return $this->userTable;
     }
+
+    public function getRelationTable()
+    {
+        if (!$this->relationTable) {
+            $sm = $this->getServiceLocator();
+            $this->relationTable = $sm->get('Jfa\Model\JunkFoodIngredientTable');
+        }
+        return $this->relationTable;
+    }
+
+
 }
