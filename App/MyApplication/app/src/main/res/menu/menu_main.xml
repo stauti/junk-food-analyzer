@@ -1,0 +1,21 @@
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <item
+        android:id="@+id/menu_home"
+        android:title="Meine Geräte"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_hinzu"
+        android:title="Neues Gerät"
+        android:orderInCategory="101"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_logout"
+        android:title="Abmelden"
+        android:orderInCategory="102"
+        app:showAsAction="never" />
+</menu>
