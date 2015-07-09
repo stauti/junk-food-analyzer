@@ -29,12 +29,11 @@ class UserTable
         return $row;
     }
 
-    public function getUserByName($p_name)
+    public function getUserByName($name)
     {
-        $name = $p_name;
         $rowset = $this->tableGateway->select(array('name' => $name));
         $row = $rowset->current();
-        if (!$row){
+        if (!$row) {
             return null;
         }
         return $row;

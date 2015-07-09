@@ -57,12 +57,16 @@ class IngredientTable
         $this->tableGateway->delete(array('ingrID' => (int) $id));
     }
 
-    public function getIngredientsByJunkfood(JunkFood $junk)
+    public function getIngredientsByJunkfood($junk)
     {
-        $id = $junk->junkfoodID;
+        if ($junk instanceof JunkFood) {
+            $id = $junk->junkfoodID;
+        } else {
+            $id = $junk;
+        }
 
         $resultSet = $this->tableGateway->getAdapter()->driver->getConnection()
-            ->execute('SELECT * FROM ingredients
+            ->execute('SELECT ingredients.*, junkfoodIngredients.gramm as gramm FROM ingredients
             LEFT JOIN junkfoodIngredients ON ingredients.ingrID = junkfoodIngredients.ingrID
             WHERE junkfoodIngredients.junkfoodID =
         ' . ($id != null ? $id : 0));
