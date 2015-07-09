@@ -12,17 +12,44 @@ class JunkFoodRestController extends AbstractRestfulController
 {
     protected $junkFoodTable;
     protected $ingredientTable;
-    protected $relationTable;
+
+    protected $userName = false;
+    protected $authservice;
+
+    public function getAuthService()
+    {
+        if (! $this->authservice) {
+            $this->authservice = $this->getServiceLocator()
+                ->get('AuthService');
+        }
+
+        return $this->authservice;
+    }
 
     public function getList()
     {
+        if ($this->getAuthService()->hasIdentity()){
+            $this->userName = $this->getAuthService()->getIdentity();
+        }
+
         $results = $this->getJunkFoodTable()->fetchAll();
         $data = array();
         foreach($results as $result) {
+            $ingredients = $this->getIngredientTable()->getIngredientsByJunkfood($result->junkfoodID);
+            $calories = $result->kcal;
+            $result->ingredients = array();
+
+            foreach ($ingredients as $ingredient) {
+                $calories += $ingredient['kcalPer100g'] * $ingredient['gramm'] / 100;
+                $result->ingredients[] = $ingredient;
+            }
+
+            $result->kcal = $calories;
+
             $data[] = $result;
         }
 
-        $result = new \Zend\View\Model\JsonModel(array('data' => $data));
+        $result = new JsonModel(array('data' => $data));
         return $result;
     }
 
@@ -30,7 +57,7 @@ class JunkFoodRestController extends AbstractRestfulController
     {
         $data = $this->getJunkFoodTable()->getJunkFood($id);
 
-        $result = new \Zend\View\Model\JsonModel(array('data' => $data));
+        $result = new JsonModel(array('data' => $data));
         return $result;
     }
 
@@ -40,7 +67,7 @@ class JunkFoodRestController extends AbstractRestfulController
         $junk->exchangeArray($data);
         $id = $this->getJunkFoodTable()->saveJunkFood($junk);
 
-        return new \Zend\View\Model\JsonModel(array(
+        return new JsonModel(array(
             'data' => 'Successfully saved with ID: ' . $id,
         ));
     }
@@ -81,14 +108,5 @@ class JunkFoodRestController extends AbstractRestfulController
             $this->ingredientTable = $sm->get('Jfa\Model\IngredientTable');
         }
         return $this->ingredientTable;
-    }
-
-    public function getRelationTable()
-    {
-        if (!$this->relationTable) {
-            $sm = $this->getServiceLocator();
-            $this->relationTable = $sm->get('Jfa\Model\JunkFoodIngredientTable');
-        }
-        return $this->relationTable;
     }
 }

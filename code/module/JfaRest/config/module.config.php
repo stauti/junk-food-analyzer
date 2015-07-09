@@ -3,6 +3,7 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'JfaRest\Controller\JunkFoodRest' => 'JfaRest\Controller\JunkFoodRestController',
+            'JfaRest\Controller\UserRest' => 'JfaRest\Controller\UserRestController',
         ),
     ),
 
@@ -20,17 +21,15 @@ return array(
                     ),
                 ),
             ),
-            'user' => array(
+            'user-rest' => array(
                 'type'    => 'segment',
                 'options' => array(
-                    'route'    => '/user/:name[/:password]',
+                    'route'    => '/user[/:id]',
                     'constraints' => array(
-                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'name'     => '[a-zA-Z0-9_-]+',
                     ),
                     'defaults' => array(
-                        'controller' => 'Jfa\Controller\User',
-                        'action'     => 'get',
+                        'controller' => 'JfaRest\Controller\UserRest',
                     ),
                 ),
             )
