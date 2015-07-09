@@ -3,16 +3,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+    <ImageButton
+        android:id="@+id/burger_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/burger_logo"/>
+
+
     <TextView
         android:id="@+id/list_item_string"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
+        android:layout_toRightOf="@+id/burger_button"
         android:paddingLeft="8dp"
         android:textSize="18sp"
-        android:textStyle="bold" />
-
+        android:textStyle="bold"
+        android:text = "Pizza Drogo"/>
 
     <ImageButton
         android:id="@+id/list_toggle_button"
@@ -22,25 +34,6 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="5dp"
-        android:background="@drawable/light_bulb_256"/>
-
-    <ImageButton
-        android:id="@+id/list_zeit_button"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_toLeftOf="@id/list_toggle_button"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="30dp"
-        android:background="@drawable/alarm_clock_256"/>
-
-    <ImageButton
-        android:id="@+id/list_aendern_button"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_toLeftOf="@id/list_zeit_button"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="30dp"
-        android:text="@string/aendernbutton"
-        android:background="@drawable/gear_256"/>
+        android:background="@drawable/add_tool_256"/>
 
 </RelativeLayout>

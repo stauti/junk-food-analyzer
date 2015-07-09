@@ -17,7 +17,7 @@
             android:maxHeight="90dp"
             android:layout_weight="2"
             android:layout_marginTop="20dp"
-            android:src="@drawable/homepage_256"/>
+            android:src="@drawable/burger_logo"/>
     </LinearLayout>
 
     <ListView

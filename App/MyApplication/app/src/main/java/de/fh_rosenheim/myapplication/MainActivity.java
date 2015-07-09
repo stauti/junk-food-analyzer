@@ -151,11 +151,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             listItemText.setTag(position);
 
             //Buttons hinzufuegen und Positions-Tag bereitstellen
-            ImageButton zeitButton = (ImageButton)view.findViewById(R.id.list_zeit_button);
-            ImageButton aendernButton = (ImageButton)view.findViewById(R.id.list_aendern_button);
             final ImageButton toggleButton = (ImageButton)view.findViewById(R.id.list_toggle_button);
-            zeitButton.setTag(position);
-            aendernButton.setTag(position);
             toggleButton.setTag(position);
 
             //Status der Geraete (laut Server) in der Liste setzen:
@@ -166,41 +162,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             {
                 toggleButton.setBackground(getResources().getDrawable(R.drawable.light_bulb_256));
             }
-
-            zeitButton.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    int position = (int)v.getTag();
-                    JSONObject device = new JSONObject();
-                    try {
-                        device = jsonArray.getJSONObject(position);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        Toast.makeText(context, "Problem retrieving device.", Toast.LENGTH_LONG).show();
-                    }
-                    Intent zuZeitWechseln = new Intent(MainActivity.this, ZeitsteuerungActivity.class);
-                    zuZeitWechseln.putExtra("jsonObject", device.toString());
-                    MainActivity.this.startActivity(zuZeitWechseln);
-                }
-            });
-
-            aendernButton.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    int position = (int)v.getTag();
-                    JSONObject device = new JSONObject();
-                    try {
-                        device = jsonArray.getJSONObject(position);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        Toast.makeText(context, "Problem retrieving device.", Toast.LENGTH_LONG).show();
-                    }
-                    Intent zuAendernWechseln = new Intent(MainActivity.this, GeraetAendernActivity.class);
-                    zuAendernWechseln.putExtra("jsonObject", device.toString());
-                    //Toast.makeText(context, device.toString(), Toast.LENGTH_LONG).show();
-                    MainActivity.this.startActivity(zuAendernWechseln);
-                }
-            });
 
             toggleButton.setOnClickListener(new View.OnClickListener(){
                 @Override

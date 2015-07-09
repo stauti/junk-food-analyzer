@@ -21,6 +21,6 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="5dp"
-        android:background="@drawable/light_bulb_256"/>
+        android:background="@drawable/add_tool_256"/>
 
 </RelativeLayout>

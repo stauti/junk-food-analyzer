@@ -16,7 +16,7 @@
             android:maxHeight="250dp"
             android:layout_weight="2"
             android:layout_marginTop="60dp"
-            android:src="@drawable/m2m_home_256"/>
+            android:src="@drawable/belly"/>
     </LinearLayout>
 
     <LinearLayout

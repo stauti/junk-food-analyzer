@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:background="@null"
         android:scaleType="fitStart"
-        android:src="@drawable/m2m_home_256"
+        android:src="@drawable/belly"
         android:paddingRight="0dp"
         android:onClick="onClick"
         android:paddingTop="4dp"/>
