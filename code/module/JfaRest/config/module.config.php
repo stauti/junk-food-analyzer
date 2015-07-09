@@ -3,6 +3,7 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'JfaRest\Controller\JunkFoodRest' => 'JfaRest\Controller\JunkFoodRestController',
+            'JfaRest\Controller\IngredientsRest' => 'JfaRest\Controller\IngredientsRestController'
         ),
     ),
 
@@ -31,6 +32,19 @@ return array(
                     'defaults' => array(
                         'controller' => 'Jfa\Controller\User',
                         'action'     => 'get',
+                    ),
+                ),
+            ),
+            'ingredients-rest' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/ingredient[/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'name'     => '[a-zA-Z0-9_-]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'JfaRest\Controller\IngredientsRest',
                     ),
                 ),
             )

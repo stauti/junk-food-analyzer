@@ -1,12 +1,11 @@
 <?php
 namespace JfaRest\Controller;
 
-use Jfa\Model\Ingredient;
 use Zend\Mvc\Controller\AbstractRestfulController;
 
-use Jfa\Model\JunkFood;
-use Jfa\Form\JunkFoodForm;
-use Jfa\Model\JunkFoodTable;
+use Jfa\Model\Ingredient;
+use Jfa\Form\IngredientForm;
+use Jfa\Model\IngredientTable;
 use Zend\View\Model\JsonModel;
 
 class IngredientsRestController extends AbstractRestfulController{
@@ -35,6 +34,8 @@ class IngredientsRestController extends AbstractRestfulController{
 
     public function create($data)
     {
+        $result = new \Zend\View\Model\JsonModel(array('data' => $data));
+        return $result;
         $ingr = new Ingredient();
         $ingr->exchangeArray($data);
         $id = $this->getIngredientsTable()->saveIngredient($ingr);
@@ -68,7 +69,7 @@ class IngredientsRestController extends AbstractRestfulController{
     {
         if (!$this->ingredientsTable) {
             $sm = $this->getServiceLocator();
-            $this->ingredientsTable = $sm->get('Jfa\Model\IngredientsTable');
+            $this->ingredientsTable = $sm->get('Jfa\Model\IngredientTable');
         }
         return $this->ingredientsTable;
     }

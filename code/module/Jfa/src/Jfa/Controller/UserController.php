@@ -30,7 +30,19 @@ class UserController extends AbstractActionController
 
             if ($form->isValid()) {
                 $user->exchangeArray($form->getData());
-                $this->getUserTable()->saveUser($user);
+
+                // User already exists?
+                $exists = $this->getUserTable()->getUserByName($user->name);
+
+
+                if($exists != null)
+                {
+                   return $this->redirect()->toRoute('users');
+                }
+                else{
+                    $user->exchangeArray($form->getData());
+                    $this->getUserTable()->saveUser($user);
+                }
 
                 // Redirect to list of albums
                 return $this->redirect()->toRoute('users');
@@ -60,20 +72,25 @@ class UserController extends AbstractActionController
         }
 
         $form  = new UserForm();
+
+        $password = $user->password;
+
         $form->bind($user);
         $form->get('submit')->setAttribute('value', 'Edit');
-
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $form->setInputFilter($user->getInputFilter());
-            $form->setData($request->getPost());
+            $post = $request->getPost();
 
-            if ($form->isValid()) {
-                $this->getUserTable()->saveUser($user);
-
-                // Redirect to list of albums
-                return $this->redirect()->toRoute('users');
+            if (!isset($post['password']) || !$post['password']) {
+                $post['password'] = $password;
             }
+
+            $user->exchangeArray($post);
+
+            $this->getUserTable()->saveUser($user);
+
+            // Redirect to list of albums
+            return $this->redirect()->toRoute('users');
         }
 
         return array(
