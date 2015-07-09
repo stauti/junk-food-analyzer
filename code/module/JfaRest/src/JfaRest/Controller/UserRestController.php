@@ -37,6 +37,11 @@ class UserRestController extends AbstractRestfulController
         return new JsonModel(array('message' => 'You wish!'));
     }
 
+    public function get($blubb)
+    {
+        return new JsonModel(array('param' => $blubb));
+    }
+
     public function create($cred)
     {
         if ($this->getAuthService()->hasIdentity()){
