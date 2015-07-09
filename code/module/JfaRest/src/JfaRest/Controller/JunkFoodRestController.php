@@ -12,6 +12,7 @@ class JunkFoodRestController extends AbstractRestfulController
 {
     protected $junkFoodTable;
     protected $ingredientTable;
+    protected $userTable;
 
     protected $userName = false;
     protected $authservice;
@@ -32,7 +33,7 @@ class JunkFoodRestController extends AbstractRestfulController
             $this->userName = $this->getAuthService()->getIdentity();
         }
 
-        $results = $this->getJunkFoodTable()->fetchAll();
+        $results = $this->getJunkFoodTable()->fetchAll($this->userName);
         $data = array();
         foreach($results as $result) {
             $ingredients = $this->getIngredientTable()->getIngredientsByJunkfood($result->junkfoodID);
@@ -63,6 +64,15 @@ class JunkFoodRestController extends AbstractRestfulController
 
     public function create($data)
     {
+        $userId = null;
+
+        if ($this->getAuthService()->hasIdentity()){
+            $this->userName = $this->getAuthService()->getIdentity();
+            $userId = $this->getUserTable()->getUserByName($this->userName);
+        }
+
+        $data['userID'] = $userId;
+
         $junk = new JunkFood();
         $junk->exchangeArray($data);
         $id = $this->getJunkFoodTable()->saveJunkFood($junk);
@@ -108,5 +118,14 @@ class JunkFoodRestController extends AbstractRestfulController
             $this->ingredientTable = $sm->get('Jfa\Model\IngredientTable');
         }
         return $this->ingredientTable;
+    }
+
+    public function getUserTable()
+    {
+        if (!$this->userTable) {
+            $sm = $this->getServiceLocator();
+            $this->userTable = $sm->get('Jfa\Model\UserTable');
+        }
+        return $this->userTable;
     }
 }

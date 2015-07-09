@@ -15,16 +15,17 @@ class JunkFoodTable
         $this->tableGateway = $tableGateway;
     }
 
-    public function fetchAll($id = false)
+    public function fetchAll($name = false)
     {
         $select = $this->tableGateway->getSql()->select()
-            ->join(array('type_table' => 'junkfoodArt'), 'type_table.artID = junkfood.art', 'art');
+            ->join(array('type_table' => 'junkfoodArt'), 'type_table.artID = junkfood.art', 'art')
+            ->join(array('user_table' => 'user'), 'user_table.userID = junkfood.userID', 'name');
 
-        if ($id && $id !== true) {
-            $select->where(array('junkfood.userID' => $id));
+        if ($name && $name !== true) {
+            $select->where(array('user_table.name' => $name));
         }
-        if ($id !== true) {
-            $select->where(array('junkfood.userID IS NULL'));
+        if ($name !== true) {
+            $select->where(array('user_table.name IS NULL'));
         }
 
         $resultSet = $this->tableGateway->selectWith($select);

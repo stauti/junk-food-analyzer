@@ -29,6 +29,16 @@ class UserTable
         return $row;
     }
 
+    public function getUserByName($name)
+    {
+        $rowset = $this->tableGateway->select(array('name' => $name));
+        $row = $rowset->current();
+        if (!$row) {
+            throw new \Exception("Could not find row $name");
+        }
+        return $row;
+    }
+
     public function saveUser(User $user)
     {
         $data = array(
