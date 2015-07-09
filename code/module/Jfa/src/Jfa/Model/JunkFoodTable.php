@@ -18,10 +18,10 @@ class JunkFoodTable
     public function fetchAll($name = false)
     {
         $select = $this->tableGateway->getSql()->select()
-            ->join(array('type_table' => 'junkfoodArt'), 'type_table.artID = junkfood.art', 'art')
-            ->join(array('user_table' => 'user'), 'user_table.userID = junkfood.userID', 'name');
+            ->join(array('type_table' => 'junkfoodArt'), 'type_table.artID = junkfood.art', 'art', 'left')
+            ->join(array('user_table' => 'user'), 'user_table.userID = junkfood.userID', array('username' => 'name'), 'left');
 
-        if ($name && $name !== true) {
+        if ($name && ($name !== true)) {
             $select->where(array('user_table.name' => $name));
         }
         if ($name !== true) {
