@@ -34,8 +34,6 @@ class IngredientsRestController extends AbstractRestfulController{
 
     public function create($data)
     {
-        $result = new \Zend\View\Model\JsonModel(array('data' => $data));
-        return $result;
         $ingr = new Ingredient();
         $ingr->exchangeArray($data);
         $id = $this->getIngredientsTable()->saveIngredient($ingr);
