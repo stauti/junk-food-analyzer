@@ -11,6 +11,8 @@ use Zend\View\Model\JsonModel;
 class JunkFoodRestController extends AbstractRestfulController
 {
     protected $junkFoodTable;
+    protected $ingredientTable;
+    protected $relationTable;
 
     public function getList()
     {
@@ -70,5 +72,23 @@ class JunkFoodRestController extends AbstractRestfulController
             $this->junkFoodTable = $sm->get('Jfa\Model\JunkFoodTable');
         }
         return $this->junkFoodTable;
+    }
+
+    public function getIngredientTable()
+    {
+        if (!$this->ingredientTable) {
+            $sm = $this->getServiceLocator();
+            $this->ingredientTable = $sm->get('Jfa\Model\IngredientTable');
+        }
+        return $this->ingredientTable;
+    }
+
+    public function getRelationTable()
+    {
+        if (!$this->relationTable) {
+            $sm = $this->getServiceLocator();
+            $this->relationTable = $sm->get('Jfa\Model\JunkFoodIngredientTable');
+        }
+        return $this->relationTable;
     }
 }

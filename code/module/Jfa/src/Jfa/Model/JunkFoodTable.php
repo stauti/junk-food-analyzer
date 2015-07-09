@@ -18,7 +18,7 @@ class JunkFoodTable
     public function fetchAll()
     {
         $select = $this->tableGateway->getSql()->select()
-            ->join(array('type_table' => 'junkfoodArt'), 'type_table.artID = junkfood.junkfoodID', 'art');
+            ->join(array('type_table' => 'junkfoodArt'), 'type_table.artID = junkfood.art', 'art');
 
         $resultSet = $this->tableGateway->selectWith($select);
 
