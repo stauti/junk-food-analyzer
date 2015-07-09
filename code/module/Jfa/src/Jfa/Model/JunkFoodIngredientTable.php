@@ -15,7 +15,7 @@ class JunkFoodIngredientTable
         $this->tableGateway = $tableGateway;
     }
 
-    public function saveRelation(array $data, $junkfoodId = null)
+    public function saveRelation($data, $junkfoodId = null)
     {
         if ($junkfoodId) {
             $this->tableGateway->delete("junkfoodID = {$junkfoodId}");

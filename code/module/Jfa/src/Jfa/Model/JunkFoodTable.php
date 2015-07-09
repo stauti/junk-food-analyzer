@@ -22,9 +22,8 @@ class JunkFoodTable
             ->join(array('user_table' => 'user'), 'user_table.userID = junkfood.userID', array('username' => 'name'), 'left');
 
         if ($name && ($name !== true)) {
-            $select->where(array('user_table.name' => $name));
-        }
-        if ($name !== true) {
+            $select->where("user_table.name = '{$name}' OR user_table.name IS NULL");
+        } elseif ($name !== true) {
             $select->where(array('user_table.name IS NULL'));
         }
 
@@ -36,7 +35,7 @@ class JunkFoodTable
     public function getJunkFood($id)
     {
         $id  = (int) $id;
-        $rowset = $this->tableGateway->select(array('id' => $id));
+        $rowset = $this->tableGateway->select(array('junkfoodID' => $id));
         $row = $rowset->current();
         if (!$row) {
             throw new \Exception("Could not find row $id");
@@ -72,7 +71,7 @@ class JunkFoodTable
 
     public function deleteJunkFood($id)
     {
-        $this->tableGateway->delete(array('id' => (int) $id));
+        $this->tableGateway->delete(array('junkfoodID' => (int) $id));
     }
 
     public function getDrogoSugestion()

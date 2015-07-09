@@ -15,7 +15,7 @@ return array(
                 'options' => array(
                     'route'    => '/junkfood[/:id]',
                     'constraints' => array(
-                        'id'     => '^[0-9]+$|drogo',
+                        'id'     => '[0-9]+',
                     ),
                     'defaults' => array(
                         'controller' => 'JfaRest\Controller\JunkFoodRest',

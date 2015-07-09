@@ -20,15 +20,22 @@ class IngredientsRestController extends AbstractRestfulController{
             $data[] = $result;
         }
 
-        $result = new \Zend\View\Model\JsonModel(array('data' => $data));
+        $result = new JsonModel(array('data' => $data));
         return $result;
     }
 
     public function get($id)
     {
-        $data = $this->getIngredientsTable()->getIngredient($id);
+        try {
+            $data = $this->getIngredientsTable()->getIngredient($id);
+        } catch (\Exception $e) {
+            return new JsonModel(array(
+                'status' => 'failure',
+                'message' => 'Ingredient with the ID: ' . $id . 'does not exist.',
+            ));
+        }
 
-        $result = new \Zend\View\Model\JsonModel(array('data' => $data));
+        $result = new JsonModel(array('data' => $data));
         return $result;
     }
 
@@ -36,21 +43,41 @@ class IngredientsRestController extends AbstractRestfulController{
     {
         $ingr = new Ingredient();
         $ingr->exchangeArray($data);
-        $id = $this->getIngredientsTable()->saveIngredient($ingr);
 
-        return new \Zend\View\Model\JsonModel(array(
-            'data' => 'Successfully saved with ID: ' . $id,
+        try {
+            $this->getIngredientsTable()->saveIngredient($ingr);
+        } catch (\Exception $e) {
+            return new JsonModel(array(
+                'status' => 'failure',
+                'message' => 'Successfully added Ingredient: ' . $ingr->ingrName,
+            ));
+        }
+
+        return new JsonModel(array(
+            'status' => 'success',
+            'message' => 'Successfully added Ingredient: ' . $ingr->ingrName,
         ));
     }
 
     public function update($id, $data)
     {
         $data['id'] = $id;
-        $ingr = $this->getIngredientsTable()->getIngredient($id);
-        $id = $this->getIngredientsTable()->saveIngredient($ingr);
+        $ingr = new Ingredient();
+        $ingr->exchangeArray($data);
+        $ingr->ingrID = $id;
+
+        try {
+            $id = $this->getIngredientsTable()->saveIngredient($ingr);
+        } catch (\Exception $e) {
+            return new JsonModel(array(
+                'status' => 'failure',
+                'message' => 'Failed to update Ingredient with ID: ' . $id . 'please check if it exist and that your request is right',
+            ));
+        }
 
         return new JsonModel(array(
-            'data' => 'Successfully updated ' . $ingr->type . ' with ID: ' . $id,
+            'status' => 'success',
+            'message' => 'Successfully updated Ingredient with the ID: ' . $id,
         ));
     }
 
@@ -59,7 +86,8 @@ class IngredientsRestController extends AbstractRestfulController{
         $this->getIngredientsTable()->deleteIngredient($id);
 
         return new JsonModel(array(
-            'data' => 'deleted',
+            'status' => 'success',
+            'message' => 'Successfully deleted Ingredient with the ID: ' . $id,
         ));
     }
 

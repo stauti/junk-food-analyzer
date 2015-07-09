@@ -1,0 +1,27 @@
+<table>
+    <thead>
+        <tr>
+            <td>Name</td>
+            <td>Art</td>
+            <td>Kalorien</td>
+            <td>Ingredients</td>
+        </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($junk['data'] as $food) : ?>
+        <tr>
+            <td><?php echo $food['name']; ?></td>
+            <td><?php echo $food['art']; ?></td>
+            <td><?php echo $food['kcal']; ?></td>
+            <td>
+                <ul>
+                    <?php foreach ($food['ingredients'] as $ingr) : ?>
+                    <li><?php echo $ingr['ingrName'] . ': ' . $ingr['gramm'] . ' Gramm'; ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>
+

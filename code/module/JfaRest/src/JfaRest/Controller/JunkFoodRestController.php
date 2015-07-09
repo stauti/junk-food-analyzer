@@ -58,10 +58,17 @@ class JunkFoodRestController extends AbstractRestfulController
         if ($id == 'drogo') {
             $data = $this->getJunkFoodTable()->getDrogoSugestion();
         } else {
-            $data = $this->getJunkFoodTable()->getJunkFood($id);
+            try {
+                $data = $this->getJunkFoodTable()->getJunkFood($id);
+            } catch (\Exception $e) {
+                return new JsonModel(array(
+                    'status' => 'failure',
+                    'message' => 'Could not find Junkfood with the ID: ' . $id,
+                ));
+            }
         }
 
-        $result = new JsonModel(array('data' => $data));
+        $result = new JsonModel(array($data));
         return $result;
     }
 
@@ -79,17 +86,25 @@ class JunkFoodRestController extends AbstractRestfulController
             ));
         }
 
-        $data['userID'] = $userId;
+        $data['userID'] = $userId->userID;
 
         $junk = new JunkFood();
         $junk->exchangeArray($data);
-        $id = $this->getJunkFoodTable()->saveJunkFood($junk);
+
+        try {
+            $id = $this->getJunkFoodTable()->saveJunkFood($junk);
+        } catch (\Exception $e) {
+            return new JsonModel(array(
+                'status' => 'failure',
+                'message' => 'Failed to create Junkfood please check your request',
+            ));
+        }
 
         if (isset($data['ingredients']) && !empty($data['ingredients'])) {
             $relations = array();
 
             foreach ($data['ingredients'] as $ingredient) {
-                $relations = array('ingrID' => $ingredient['ingrID'], 'junkfoodID' => $id, 'gramm' => $ingredient['gramm']);
+                $relations[] = array('ingrID' => $ingredient['ingrID'], 'junkfoodID' => $id, 'gramm' => $ingredient['gramm']);
             }
 
             $this->getRelationTable()->saveRelation($relations);
@@ -101,11 +116,11 @@ class JunkFoodRestController extends AbstractRestfulController
         ));
     }
 
-    public function update($data)
+    public function update($id, $data)
     {
         if ($this->getAuthService()->hasIdentity()){
             $this->userName = $this->getAuthService()->getIdentity();
-            $userId = $this->getUserTable()->getUserByName($this->userName);
+            $user = $this->getUserTable()->getUserByName($this->userName);
         } else {
             return new JsonModel(array(
                 'status' => 'failure',
@@ -113,28 +128,41 @@ class JunkFoodRestController extends AbstractRestfulController
             ));
         }
 
-        $junk = new JunkFood();
-        $junk->exchangeArray($data);
-
-        if ($junk->userID == $userId) {
-            $this->getJunkFoodTable()->deleteJunkFood($id);
-
+        try {
+            $junk = $this->getJunkFoodTable()->getJunkFood($id);
+        } catch (\Exception $e) {
             return new JsonModel(array(
-                'status' => 'success',
-                'message' => "Junkfood {$junk->name} successfully deleted!"
+                'status' => 'failure',
+                'message' => 'Failed to get the Junkfood with the ID: ' . $id,
             ));
         }
 
-        $id = $this->getJunkFoodTable()->saveJunkFood($junk);
+        if ($junk->userID == $user->userID) {
+            try {
+                $junk->exchangeArray($data);
+                $junk->junkfoodID = $id;
+                $id = $this->getJunkFoodTable()->saveJunkFood($junk);
+            } catch (\Exception $e) {
+                return new JsonModel(array(
+                    'status' => 'failure',
+                    'message' => 'Failed to update the Junkfood please check your request',
+                ));
+            }
+        } else {
+            return new JsonModel(array(
+                'status' => 'failure',
+                'message' => 'You may only update your own junk',
+            ));
+        }
 
         if (isset($data['ingredients']) && !empty($data['ingredients'])) {
             $relations = array();
 
             foreach ($data['ingredients'] as $ingredient) {
-                $relations = array('ingrID' => $ingredient['ingrID'], 'junkfoodID' => $id, 'gramm' => $ingredient['gramm']);
+                $relations[] = array('ingrID' => $ingredient['ingrID'], 'junkfoodID' => $id, 'gramm' => $ingredient['gramm']);
             }
 
-            $this->getRelationTable()->saveRelation($relations);
+            $this->getRelationTable()->saveRelation($relations, $id);
         }
 
         return new JsonModel(array(
@@ -147,7 +175,7 @@ class JunkFoodRestController extends AbstractRestfulController
     {
         if ($this->getAuthService()->hasIdentity()){
             $this->userName = $this->getAuthService()->getIdentity();
-            $userId = $this->getUserTable()->getUserByName($this->userName);
+            $user = $this->getUserTable()->getUserByName($this->userName);
         } else {
             return new JsonModel(array(
                 'status' => 'failure',
@@ -157,7 +185,8 @@ class JunkFoodRestController extends AbstractRestfulController
 
         $junk = $this->getJunkFoodTable()->getJunkFood($id);
 
-        if ($junk->userID == $userId) {
+        if ($junk->userID == $user->userID) {
+            $this->getRelationTable()->saveRelation(array(), $id);
             $this->getJunkFoodTable()->deleteJunkFood($id);
 
             return new JsonModel(array(
@@ -207,4 +236,6 @@ class JunkFoodRestController extends AbstractRestfulController
         }
         return $this->relationTable;
     }
+
+
 }
