@@ -11,22 +11,29 @@ class IngredientForm extends Form
         parent::__construct('ingredient');
 
         $this->add(array(
-            'name' => 'id',
+            'name' => 'ingrID',
             'type' => 'Hidden',
         ));
         $this->add(array(
-            'name' => 'name',
+            'name' => 'ingrName',
             'type' => 'Text',
             'options' => array(
                 'label' => 'Name',
             ),
         ));
         $this->add(array(
-            'name' => 'type',
-            'type' => 'Text',
+            'name' => 'kcalPer100g',
+            'type' => 'Number',
             'options' => array(
-                'label' => 'Type',
+                'label' => 'Kcal (100g)',
             ),
+        ));
+        $this->add(array(
+           'name' => 'isVeggie',
+           'type' => 'Checkbox',
+           'options' => array(
+                'label' => 'Veggetable',
+           ),
         ));
         $this->add(array(
             'name' => 'submit',

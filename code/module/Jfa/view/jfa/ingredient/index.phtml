@@ -9,19 +9,28 @@ $this->headTitle($title);
 
 <table class="table">
     <tr>
-        <th>Name</th>
-        <th>Type</th>
+        <th>Ingredient</th>
+        <th>Kcal/100g</th>
+        <th>Veggetable</th>
         <th>&nbsp;</th>
     </tr>
     <?php foreach ($ingredients as $ingredient) : ?>
         <tr>
-            <td><?php echo $this->escapeHtml($ingredient->name);?></td>
-            <td><?php echo $this->escapeHtml($ingredient->type);?></td>
+            <td><?php echo $this->escapeHtml($ingredient->ingrName);?></td>
+            <td><?php echo $this->escapeHtml($ingredient->kcalPer100g);?></td>
+            <td>
+                <?php
+                    if($ingredient->isVeggie == true)
+                        echo "YES";
+                    else
+                        echo "NO";
+                ?>
+            </td>
             <td>
                 <a href="<?php echo $this->url('ingredient',
-                    array('action'=>'edit', 'id' => $ingredient->id));?>">Edit</a>
+                    array('action'=>'edit', 'id' => $ingredient->ingrID));?>">Edit </a>|
                 <a href="<?php echo $this->url('ingredient',
-                    array('action'=>'delete', 'id' => $ingredient->id));?>">Delete</a>
+                    array('action'=>'delete', 'id' => $ingredient->ingrID));?>">Delete</a>
             </td>
         </tr>
     <?php endforeach; ?>

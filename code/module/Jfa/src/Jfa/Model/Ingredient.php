@@ -71,7 +71,6 @@ class Ingredient
                     array('name' => 'Int'),
                 ),
             ));
-
             $this->inputFilter = $inputFilter;
         }
 
