@@ -1,0 +1,51 @@
+<a href="/application/index/edit">Add new Junkfood</a>
+
+<div class="row">
+    <div class="col-md-2">
+        <h2>Name</h2>
+    </div>
+
+    <div class="col-md-2">
+        <h2>Art</h2>
+    </div>
+
+    <div class="col-md-2">
+        <h2>Kalorien</h2>
+    </div>
+
+    <div class="col-md-4">
+        <h2>Zutaten</h2>
+    </div>
+
+    <div class="col-md-2">
+        <h2>Aktion</h2>
+    </div>
+</div>
+
+<?php foreach ($junk as $food) : ?>
+<div class="row">
+    <div class="col-md-2">
+        <?php echo $food['name']; ?>
+    </div>
+
+    <div class="col-md-2">
+        <?php echo $food['art']; ?>
+    </div>
+
+    <div class="col-md-2">
+        <?php echo $food['kcal']; ?>
+    </div>
+
+    <div class="col-md-4">
+        <?php foreach ($food['ingredients'] as $ingredient): ?>
+        <p><?php echo $ingredient['ingrName'] . ': ' . $ingredient['gramm'] . ' Gramm' ?></p>
+        <?php endforeach; ?>
+    </div>
+
+    <div class="col-md-2">
+        <a href="/application/index/detail/<?php echo $food['junkfoodID']; ?>">Detail</a>/
+        <a href="/application/index/edit/<?php echo $food['junkfoodID']; ?>">Edit</a>/
+        <a href="/application/index/delete/<?php echo $food['junkfoodID']; ?>">Delete</a>
+    </div>
+</div>
+<?php endforeach; ?>
