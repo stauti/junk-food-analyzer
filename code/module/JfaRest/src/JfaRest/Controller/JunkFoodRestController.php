@@ -68,6 +68,17 @@ class JunkFoodRestController extends AbstractRestfulController
             }
         }
 
+        $ingredients = $this->getIngredientTable()->getIngredientsByJunkfood($data->junkfoodID);
+        $calories = $data->kcal;
+        $data->ingredients = array();
+
+        foreach ($ingredients as $ingredient) {
+            $calories += $ingredient['kcalPer100g'] * $ingredient['gramm'] / 100;
+            $data->ingredients[] = $ingredient;
+        }
+
+        $data->kcal = $calories;
+
         $result = new JsonModel(array($data));
         return $result;
     }
@@ -141,6 +152,7 @@ class JunkFoodRestController extends AbstractRestfulController
             try {
                 $junk->exchangeArray($data);
                 $junk->junkfoodID = $id;
+                $junk->userID = $user->userID;
                 $id = $this->getJunkFoodTable()->saveJunkFood($junk);
             } catch (\Exception $e) {
                 return new JsonModel(array(
@@ -183,7 +195,14 @@ class JunkFoodRestController extends AbstractRestfulController
             ));
         }
 
-        $junk = $this->getJunkFoodTable()->getJunkFood($id);
+        try {
+            $junk = $this->getJunkFoodTable()->getJunkFood($id);
+        } catch (\Exception $e) {
+            return new JsonModel(array(
+                'status' => 'failure',
+                'message' => 'Failed to get the Junkfood with the ID: ' . $id,
+            ));
+        }
 
         if ($junk->userID == $user->userID) {
             $this->getRelationTable()->saveRelation(array(), $id);

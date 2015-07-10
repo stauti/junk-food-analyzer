@@ -10,7 +10,7 @@ CREATE TABLE user(
   userID INT NOT NULL AUTO_INCREMENT,
   name VARCHAR(25),
   password VARCHAR(30),
-  isAdmin BIT DEFAULT FALSE,
+  isAdmin SMALLINT DEFAULT 0,
   PRIMARY KEY (userID)
 );
 

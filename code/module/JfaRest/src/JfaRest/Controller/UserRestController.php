@@ -45,7 +45,7 @@ class UserRestController extends AbstractRestfulController
     public function create($cred)
     {
         if ($this->getAuthService()->hasIdentity()){
-            $result = new JsonModel(array('data' => array('message' => 'Already logged in')));
+            $result = new JsonModel(array('data' => array('status' => 'success', 'message' => 'Already logged in')));
             return $result;
         }
 
@@ -88,7 +88,7 @@ class UserRestController extends AbstractRestfulController
             $data['messages'][] = $e->getMessage();
         }
 
-        $result = new JsonModel(array('data' => $data));
+        $result = new JsonModel(array('status' => 'success', 'message' => $data['messages']));
         return $result;
     }
 

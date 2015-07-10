@@ -1,0 +1,37 @@
+<?php
+$selected = array();
+if (isset($junk['ingredients'])) {
+    foreach ($junk['ingredients'] as $key => $value) {
+        $selected[$value['ingrID']] = $key;
+    }
+}
+?>
+
+<form action="/application/index/save" method="post">
+    <input type="hidden" name="junkfoodID" value="<?php echo $id ? $id : $id = null; ?>">
+    <label for="name">Name</label>
+    <input type="text" name="name" value="<?php echo $id ? $junk['name'] : null; ?>"><br>
+    <label for="userId">UserID</label>
+    <input type="text" name="userID" value="<?php echo $id ? $junk['userID'] : 1; ?>"><br>
+    <input type="hidden" name="art" value="<?php echo 1 ?>">
+    <label for="kcal">Basis Kalorien</label>
+    <input type="text" name="kcal" value="<?php echo $id ? $junk['kcal'] : null; ?>"><br>
+    <?php foreach($ingredients as $ingr) : ?>
+        <?php $found = false; ?>
+        <div class="row" style="width: 35%">
+            <div class="col-md-1">
+                <input
+                    type="checkbox"
+                    name="ingredients[<?php echo $ingr['ingrID']; ?>][selected]"
+                    <?php if ($found = in_array($ingr['ingrID'], array_keys($selected))) : ?> checked <?php endif; ?>>
+            </div>
+            <div class="col-md-7">
+                Name: <?php echo $ingr['ingrName']; ?>
+            </div>
+            <div class="col-md-4">
+                <input type="number" name="gramm" value="<?php if ($found) echo $junk['ingredients'][$selected[$ingr['ingrID']]]['gramm']; ?>">
+            </div>
+        </div>
+    <?php endforeach; ?>
+    <input type="submit" value="Abschicken">
+</form>
