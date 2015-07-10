@@ -1,11 +1,18 @@
-{
-    "name":"Pferd",
-    "userID":"1",
-    "art":"1",
-    "kcal":"123",
-    "ingredients":[
-        {"ingrID":"1","gramm":"50"},
-        {"ingrID":"2","gramm":"50"},
-        {"ingrID":"5","gramm":"50"}
-    ]
-}
+[
+    {
+        "name":"Pferd",
+        "userID":"1",
+        "art":"1",
+        "kcal":"123",
+        "ingredients":[
+            {"ingrID":"1","gramm":"50"},
+            {"ingrID":"2","gramm":"50"},
+            {"ingrID":"5","gramm":"50"}
+        ]
+    },
+    {
+        "ingrName": "Eselsalami",
+        "kcalPer100g": "80",
+        "isVeggie": "1"
+    }
+]

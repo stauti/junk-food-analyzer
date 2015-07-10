@@ -50,6 +50,18 @@ return array(
                     ),
                 ),
             ),
+            'jail' => array(
+                'type'    => 'Literal',
+                'options' => array(
+                    'route'    => '/application/index/jail',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Application\Controller',
+                        'controller'    => 'Index',
+                        'action'        => 'jail',
+                    ),
+                ),
+                'may_terminate' => true,
+            ),
         ),
     ),
     'service_manager' => array(

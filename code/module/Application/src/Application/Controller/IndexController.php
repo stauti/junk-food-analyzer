@@ -38,4 +38,9 @@ class IndexController extends AbstractActionController
 
         return new ViewModel(array('junk' => $junk));
     }
+
+    public function jailAction()
+    {
+        return new ViewModel();
+    }
 }

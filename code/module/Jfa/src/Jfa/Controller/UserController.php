@@ -1,15 +1,13 @@
 <?php
 namespace Jfa\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
+use Jfa\Controller\AbstractController;
 use Zend\View\Model\ViewModel;
 use Jfa\Model\User;
 use Jfa\Form\UserForm;
 
-class UserController extends AbstractActionController
+class UserController extends AbstractController
 {
-    protected $userTable;
-
     public function indexAction()
     {
         return new ViewModel(array(
@@ -123,14 +121,5 @@ class UserController extends AbstractActionController
             'id'    => $id,
             'user' => $this->getUserTable()->getUser($id)
         );
-    }
-
-    public function getUserTable()
-    {
-        if (!$this->userTable) {
-            $sm = $this->getServiceLocator();
-            $this->userTable = $sm->get('Jfa\Model\UserTable');
-        }
-        return $this->userTable;
     }
 }

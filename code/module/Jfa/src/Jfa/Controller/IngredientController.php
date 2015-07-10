@@ -1,12 +1,12 @@
 <?php
 namespace Jfa\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
+use Jfa\Controller\AbstractController;
 use Zend\View\Model\ViewModel;
 use Jfa\Model\Ingredient;
 use Jfa\Form\IngredientForm;
 
-class IngredientController extends AbstractActionController
+class IngredientController extends AbstractController
 {
     protected $ingredientTable;
 
